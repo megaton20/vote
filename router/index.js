@@ -56,7 +56,6 @@ router.get('/auth/google/callback',
   }
 );
 
-
 // Welcome Page
 router.get('/', async (req, res) => {
   let userActive= false
@@ -65,17 +64,14 @@ router.get('/', async (req, res) => {
   }
   // const showcaseQuery = `SELECT * FROM "contestants" WHERE "showcase" = $1 AND "total_on_shelf" > $2 AND "status" = $3 AND "activate"=$4 LIMIT $5 OFFSET $6`;
   // const queryParams = ['yes', 0, 'not-expired',true, limit, offset];
-  const contestantsQuery = `SELECT * FROM "contenders"`;
+  const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders"`);
   try {
     
-      const {rows:contestants} = await query(contestantsQuery);
-
-
       res.render('index',{
         pageTitle:`Welcome to ${appName}`,
         appName,
         userActive,
-        contestants:[],
+        contestants:contestantsQuery,
         theme:req.session.theme
       });
 

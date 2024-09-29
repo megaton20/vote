@@ -6,24 +6,17 @@
   <div class="carousel-inner h-100">
     <!-- Slide 1 -->
     <div class="carousel-item active h-100">
-      <div class="h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('/img/1.jpg'); background-size: cover; background-position: center;">
+      <div class="h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('/img/cq.jpg'); background-size: cover; background-position: center;">
         <div class="text-center">
-          <h1 class="display-4 fw-bold">Welcome to Our Platform</h1>
-          <p class="lead">Discover the best services tailored for you.</p>
-          <a href="#about" class="btn btn-primary btn-lg">Learn More</a>
+          <h1 class="display-4 fw-bold">Welcome Carnival Queen Pageant</h1>
+          <p class="lead">Welcome to the Carnival Queen Pageant, where we celebrate women's empowerment, <br> cultural diversity, and community development.</p>
+          <a href="/abouts" class="btn btn-primary btn-lg">Learn More</a>
         </div>
       </div>
     </div>
     <!-- Slide 2 -->
-    <div class="carousel-item h-100">
-      <div class="h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('/img/2.jpg'); background-size: cover; background-position: center;">
-        <div class="text-center">
-          <h1 class="display-4 fw-bold">Innovation at Your Fingertips</h1>
-          <p class="lead">Technology designed to improve your life.</p>
-          <a href="#about" class="btn btn-primary btn-lg">Learn More</a>
-        </div>
-      </div>
-    </div>
+
+
     <!-- Slide 3 -->
     <div class="carousel-item h-100">
       <div class="h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('/img/3.jpg'); background-size: cover; background-position: center;">
@@ -34,6 +27,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- Carousel Controls -->
@@ -53,26 +47,11 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-6">
-        <img src="your-image.jpg" class="img-fluid rounded" alt="About Image">
+        <img src="/img/cq.jpg" class="img-fluid rounded" alt="About Image">
       </div>
-      <div class="col-md-6">
-        <h2>About Us</h2>
-        <p class="lead">We provide exceptional services to enhance your life through creativity and technology.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Mission Section -->
-<section id="mission" class="py-5">
-  <div class="container">
-    <div class="row align-items-center">
       <div class="col-md-6">
         <h2>Our Mission</h2>
-        <p class="lead">Our mission is to lead in innovation, providing top-notch solutions for a better tomorrow.</p>
-      </div>
-      <div class="col-md-6">
-        <img src="your-mission-image.jpg" class="img-fluid rounded" alt="Mission Image">
+        <p class="lead"> are committed to providing a free and fair platform where contestants can showcase their talents, intelligence, and character while honoring their cultural heritage and promoting women's capacity development. Our pageant welcomes women from diverse backgrounds and abilities, making us a reflection of the world's beauty in diversity.</p>
       </div>
     </div>
   </div>
@@ -83,11 +62,11 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-6 order-md-2">
-        <img src="your-vision-image.jpg" class="img-fluid rounded" alt="Vision Image">
+        <img src="/img/m-2.jpeg" class="img-fluid rounded" alt="Vision Image">
       </div>
       <div class="col-md-6 order-md-1">
         <h2>Our Vision</h2>
-        <p class="lead">We envision a future where technology and creativity blend to improve the quality of life.</p>
+        <p class="lead">he Carnival Queen Pageant aims to be a leading platform for women's empowerment, cultural exchange, and community development. We strive to create an extraordinary experience that inspires and uplifts everyone involved, breaking conventions and transforming the ordinary into extraordinary through the concept of “Unusualization”.</p>
       </div>
     </div>
   </div>
@@ -98,14 +77,14 @@
   <div class="container text-center">
     <h2 class="mb-5">Our Contestants</h2>
     <div class="row">
-      <!-- Repeat this block for each contestant -->
+      <% contestants.forEach((data) => { %>
       <div class="col-md-4 mb-4">
         <a href="/contestants">
-          <img src="contestant1.jpg" class="img-fluid rounded-circle mb-2" alt="Contestant 1">
+          <img  src="<%= data.photo_url %>"  class="img-fluid  mb-2" alt="Contestant 1">
         </a>
-        <h5>Contestant 1</h5>
+        <h5><%= data.vote_count %> votes</h5>
       </div>
-      <!-- End of contestant block -->
+      <% }) %>
     </div>
   </div>
 </section>
