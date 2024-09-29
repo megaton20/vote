@@ -1,0 +1,86 @@
+<%- include('./partials/nav') %>
+
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="matches">
+        <h3 class="text-center mb-4">As It Stand</h3>
+  
+
+              <div class="table-responsive">
+                  <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                          <tr>
+                            <th>Name </th>
+                            <th>Contestant number</th>
+                            <th>Total Vote </th>
+                          </tr>
+                      </thead>
+                  
+                      <tbody>
+                    
+                          <% standings.forEach(function(data) {%>
+
+                              <tr>
+                                  <td><%= data['fname'] %>  <%= data['lname'] %> </td>
+                                  <td><%= data['cnumber'] %></td>
+                                  <td><%= data['vote_count'] %></td>
+                             </tr> 
+                             
+                                 <% }) %>
+
+                 
+                   
+                     
+                      
+
+                          </tbody>
+                  </table>
+              </div>
+
+    </div>
+</div>
+
+
+  <!-- Footer -->
+  <footer class="bg-light text-center text-lg-start">
+    <div class="container p-4">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+          <h5 class="text-uppercase">About Us</h5>
+          <p>
+            Learn more about our mission, values, and the event we host annually to empower women.
+          </p>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Contact</h5>
+          <ul class="list-unstyled mb-0">
+            <li><a href="#" class="text-dark">Email Us</a></li>
+            <li><a href="#" class="text-dark">Support</a></li>
+            <li><a href="#" class="text-dark">FAQs</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Follow Us</h5>
+          <ul class="list-unstyled mb-0">
+            <li><a href="#" class="text-dark">Facebook</a></li>
+            <li><a href="#" class="text-dark">Twitter</a></li>
+            <li><a href="#" class="text-dark">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center p-3">
+      © 2024 Carnival Queen. All rights reserved.
+    </div>
+  </footer>
+
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Link to Local Bootstrap JS -->
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+

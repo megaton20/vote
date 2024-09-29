@@ -1,0 +1,43 @@
+
+
+<style>
+
+  .form-ctrl {
+      margin-bottom: 15px;
+  }
+  .card {
+      max-width: 400px; /* Set max width for the card */
+      margin: auto; /* Center the card */
+      margin-top: 100px; /* Add top margin for spacing */
+  }
+</style>
+<%- include('./partials/nav') %>
+
+<br>
+<br>
+<br>
+<br>
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+        <%- include('./partials/messages') %>
+            <h2 class="text-center">Login</h2>
+            <form action="/auth/login" method="post">
+                <div class="mb-3">
+                    <input class="form-control form-ctrl" type="email" name="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="mb-3">
+                    <input class="form-control form-ctrl" type="password" name="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button class="btn btn-primary w-100" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>

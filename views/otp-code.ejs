@@ -1,0 +1,31 @@
+
+<%- include ('./partials/nav') %>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<%- include ('./partials/messages') %>
+
+<div class="my-hero">
+  <div class="my-grid my-container">
+    <div class="side-a">
+ 
+<form action="/auth/verify-otp" method="post">
+  <input class="form-ctrl" type="text" name="password" id="" placeholder="Enter OTP ">
+  <button class="" style="border-radius: 5px; border:none ; padding: 10px 12px; width: 100%; background: var(--primary-color); color: var(--text-color-night);" type="submit">Verify</button>
+</form> 
+
+<br>
+<br>
+<hr>
+<a href="/register" style="display: block; margin: 5px;">Resend code ?</a>
+    </div>
+    <div class="side">
+      <img src="1.webp" alt="">  
+    </div>
+  </div>
+</div>
+

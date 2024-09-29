@@ -1,0 +1,34 @@
+INSERT INTO contenders (id, fname, lname, cnumber, photo_url, vote_count)
+VALUES (1, 'Rhema', 'Abati-shobulo', '01', '/contestants/1.jpg', 0);
+
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,               -- Auto-incrementing primary key in PostgreSQL
+    email VARCHAR(255) NOT NULL UNIQUE,  -- User email, must be unique
+    password VARCHAR(255) NOT NULL,      -- User password, stored as hashed
+    user_role VARCHAR(50) DEFAULT 'user',-- User role, defaults to 'user'
+    otp VARCHAR(6),                      -- OTP for verification
+    r_code VARCHAR(10)                  -- Referral code
+);
+
+
+CREATE TABLE transactions (
+    id SERIAL PRIMARY KEY,   -- Auto-incrementing ID for the transaction
+    reference VARCHAR(255) NOT NULL,
+	votes_casted VARCHAR(255) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,      
+    status VARCHAR(50) NOT NULL,    
+    email VARCHAR(255) NOT NULL,   
+    paid_at TIMESTAMP NOT NULL,
+    user_id INT NOT NULL,
+    contendant_id INT NOT NULL
+);
+
+
+CREATE TABLE "contenders" (
+  "id" SERIAL PRIMARY KEY,
+  "fname" VARCHAR(255) NOT NULL,
+  "lname" VARCHAR(255) NOT NULL,
+  "cnumber" VARCHAR(20) NOT NULL,
+  "vote_count" INT DEFAULT 0
+);

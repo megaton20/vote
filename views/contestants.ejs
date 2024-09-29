@@ -1,0 +1,153 @@
+<%- include('./partials/nav') %>
+
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+  <%- include('./partials/messages') %>
+        <h3 class="text-center mb-4">Our Contestants</h3>
+        <div class="row">
+            <% contestants.forEach((data) => { %>
+                <div class="col-md-3 mb-4">
+                    <div class="card contender" data-id="<%= data.id %>">
+                        <div class="user-images">
+                            <div class="image-gallery">
+                                <img src="<%= data.photo_url %>" class="card-img-top" alt="<%= data.fname %> <%= data.lname %>">
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="card-text text-success">Total Votes: <strong id="voteCount-<%= data.id %>"><%= data.vote_count %></strong></p>
+        
+                            <div class="user-actions mb-2">
+                                <button class="btn btn-outline-danger decreaseVotes" data-id="<%= data.id %>">-</button>
+                                <span class="mx-2 voteNumber" id="voteNumber-<%= data.id %>">1</span>
+                                <button class="btn btn-outline-success increaseVotes" data-id="<%= data.id %>">+</button>
+                            </div>
+        
+                            <p>Total Price: ₦<span class="sumTotal m-0 p-0" id="sumTotal-<%= data.id %>">100</span></p>
+        
+                            <form class="paymentForm" id="paymentForm-<%= data.id %>">
+                                <input type="email" class="form-control" id="email-<%= data.id %>" required value="<%= user.email %>" hidden>
+                                <input type="number" class="form-control amountInput" id="amount-<%= data.id %>" value="100" hidden>
+                                <button type="submit" class="mt-2 btn btn-success voteButton" style="width: 100%;">Pay ₦<span class="paymentAmount" id="paymentAmount-<%= data.id %>">100</span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+</div>
+
+
+  <!-- Footer -->
+  <footer class="bg-light text-center text-lg-start">
+    <div class="container p-4">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+          <h5 class="text-uppercase">About Us</h5>
+          <p>
+            Learn more about our mission, values, and the event we host annually to empower women.
+          </p>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Contact</h5>
+          <ul class="list-unstyled mb-0">
+            <li><a href="#" class="text-dark">Email Us</a></li>
+            <li><a href="#" class="text-dark">Support</a></li>
+            <li><a href="#" class="text-dark">FAQs</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Follow Us</h5>
+          <ul class="list-unstyled mb-0">
+            <li><a href="#" class="text-dark">Facebook</a></li>
+            <li><a href="#" class="text-dark">Twitter</a></li>
+            <li><a href="#" class="text-dark">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center p-3">
+      © 2024 Carnival Queen. All rights reserved.
+    </div>
+  </footer>
+
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Link to Local Bootstrap JS -->
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const votePrice = 100;  // Default price per vote
+  
+  // Function to update vote number and price for a specific contestant
+  function updateVoteAndPrice(card, currentVotes) {
+    const voteNumberElement = card.querySelector('.voteNumber');
+    const sumTotalElement = card.querySelector('.sumTotal');
+    const paymentAmountElement = card.querySelector('.paymentAmount');
+    
+    const totalPrice = currentVotes * votePrice;
+    
+    voteNumberElement.textContent = currentVotes;  // Update vote count
+    sumTotalElement.textContent = totalPrice;  // Update total price
+    paymentAmountElement.textContent = totalPrice;  // Update payment amount
+  }
+  
+  // Loop through each contestant card and add event listeners
+  document.querySelectorAll('.card.contender').forEach(card => {
+    let currentVotes = 1;  // Set initial vote count for each contestant
+  
+    const contestantId = card.getAttribute('data-id');
+    const decreaseBtn = card.querySelector(`.decreaseVotes[data-id='${contestantId}']`);
+    const increaseBtn = card.querySelector(`.increaseVotes[data-id='${contestantId}']`);
+    const paymentForm = card.querySelector(`#paymentForm-${contestantId}`);
+  
+    // Increase votes
+    increaseBtn.addEventListener('click', function() {
+      currentVotes++;
+      updateVoteAndPrice(card, currentVotes);
+    });
+  
+    // Decrease votes
+    decreaseBtn.addEventListener('click', function() {
+      if (currentVotes > 1) {
+        currentVotes--;
+        updateVoteAndPrice(card, currentVotes);
+      }
+    });
+  
+    // Submit payment form for each contestant
+    paymentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = card.querySelector(`#email-${contestantId}`).value;
+      const finalAmount = parseFloat(card.querySelector(`#paymentAmount-${contestantId}`).textContent);  // Get updated total amount
+      const voteNumber = currentVotes;  // Get the current vote number
+  
+      // Make Paystack payment request
+      fetch('/pay', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, amount: Math.floor(finalAmount), contestantId, voteNumber }),  // Send contestant ID, amount, and vote number
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status) {
+          window.location.href = data.data.authorization_url;
+        } else {
+          alert('Payment failed. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      });
+    });
+  });
+  </script>
+  
