@@ -30,5 +30,6 @@ CREATE TABLE "contenders" (
   "fname" VARCHAR(255) NOT NULL,
   "lname" VARCHAR(255) NOT NULL,
   "cnumber" VARCHAR(20) NOT NULL,
-  "vote_count" INT DEFAULT 0
+  "vote_count" INT DEFAULT 0,
+  "photo_url"VARCHAR(255) NOT NULL,
 );
