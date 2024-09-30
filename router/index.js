@@ -185,20 +185,18 @@ router.get('/handler',ensureAuthenticated, (req, res)=>{
 
     const role = req.user.user_role
 
-        if ((role == "admin")) {
-         return res.redirect("/super");
+        if ((role == "super")) {
+         return res.redirect("/admin");
           // admins  ends here
         } else if(role == "user"){
          return res.redirect("/contestants");
-        // not authenticated
-        }else {
+        }
+
         req.flash("error_msg", `please log in to use our valuable resources`);
-        res.redirect('/login')
-      }
+        return res.redirect('/login')
+
 
     }
-
-    res.redirect('/login')
  
 })
 

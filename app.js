@@ -20,8 +20,8 @@ const openRoutes = require('./router/index');
 const authRouter = require('./router/auth');
 const userRouter = require('./router/userRouter');
 const contestantsRouter = require('./router/contestantsRouter');
+const superRouter = require('./router/superRouter');
 
-// const superRouter = require('./router/superRouter');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -80,7 +80,7 @@ app.use('/', openRoutes);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/contestants', contestantsRouter);
-// app.use('/super', superRouter);
+app.use('/admin', superRouter);
 
 
   // 404 Error handler for undefined routes
