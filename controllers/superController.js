@@ -54,7 +54,14 @@ exports.AdminPage = async (req, res) => {
         const formatedfailedTransactionAmount = failedTransactionAmount.toLocaleString("en-US");
         
       
-      const {rows:allContendersResult} = await query(`SELECT * FROM "contenders"`);
+        const { rows: allContendersResult } = await query(`SELECT * FROM "contenders"`);
+
+        // Calculate points for each contender
+        allContendersResult.forEach(contender => {
+          contender.points = contender.vote_count * 2; // 1 vote = 2 points
+        });
+        
+        
       const {rows:allVotesResult} = await query(`SELECT "vote_count" FROM "contenders"`);
       const allVotesAmount = allVotesResult.reduce(
         (acc, votes) => acc + parseFloat(votes.vote_count),

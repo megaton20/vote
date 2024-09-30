@@ -44,6 +44,12 @@ router.get('/standings', async (req, res) => {
     // const matches = await getUsers(req);
     const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders" ORDER BY "vote_count" DESC`);
 
+    // Calculate points for each contender
+    contestantsQuery.forEach(contender => {
+      contender.points = contender.vote_count * 2; // 1 vote = 2 points
+    });
+    
+
     res.render('standing', {
       standings:contestantsQuery,
        theme: req.session.theme,
