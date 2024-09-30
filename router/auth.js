@@ -15,21 +15,20 @@ const { ensureAuthenticated,forwardAuthenticated } = require("../config/auth");
 
 
 
-// router.get('/google', (req, res, next) => {
-//     // If a referral code is present, include it in the state parameter
-//     const referralCode = req.session.referrerCode ? req.session.referrerCode : '';
-//     passport.authenticate('google', {
-//       scope: ['profile', 'email'],
-//       state: referralCode 
-//     })(req, res, next);
-//   });
+router.get('/google', (req, res, next) => {
+    // If a referral code is present, include it in the state parameter
+    const referralCode = req.session.referrerCode ? req.session.referrerCode : '';
+    passport.authenticate('google', {
+      scope: ['profile', 'email'],
+      state: referralCode 
+    })(req, res, next);
+  });
 
 
 
 router.post('/register',forwardAuthenticated,  async (req, res) => {
   let errors = [];
 
-  console.log(req.body);
 const { email, password, passwordB } = req.body;
 
 if (!(email && password && passwordB )) {
@@ -105,7 +104,6 @@ router.post('/login',forwardAuthenticated, async (req, res, next) => {
         });
       }
 
-      try {
         req.login(user, err => {
           if (err) {
             next(err);
@@ -116,16 +114,7 @@ router.post('/login',forwardAuthenticated, async (req, res, next) => {
           req.flash('success_msg', `Welcome ${user.fname}`);
           return res.redirect('/handler');
         });
-      } catch (error) {
-        // Log the error for debugging purposes
-        console.error('Error during update:', error);
-  
-        return res.render('login', {
-          error_msg: 'Error loging in, Please try again.',
-          pageTitle: `Login To continue Using ${appName} `,
-          appName: appName,
-        });
-      }
+
     })(req, res, next);
   })
 

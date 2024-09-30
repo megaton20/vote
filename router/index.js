@@ -62,14 +62,12 @@ router.get('/', async (req, res) => {
   if (req.user) {
     userActive = true
   }
-  // const showcaseQuery = `SELECT * FROM "contestants" WHERE "showcase" = $1 AND "total_on_shelf" > $2 AND "status" = $3 AND "activate"=$4 LIMIT $5 OFFSET $6`;
-  // const queryParams = ['yes', 0, 'not-expired',true, limit, offset];
-  const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders"`);
+
+  const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders" ORDER BY id ASC`);
   try {
     
       res.render('index',{
         pageTitle:`Welcome to ${appName}`,
-        appName,
         userActive,
         contestants:contestantsQuery,
         theme:req.session.theme
@@ -77,8 +75,8 @@ router.get('/', async (req, res) => {
 
 
   } catch (error) {
-    console.error(`Error fetching user shop data: ${error}`);
-    req.flash('error_msg', 'An error occurred while loading the shop items');
+    console.error(`Error at index / ${error}`);
+    req.flash('error_msg', 'An error occurred ');
     return res.redirect('/');
   }
 
@@ -94,8 +92,7 @@ router.get('/policy', async(req, res) => {
   }
   const { rows: allCategory } = await query('SELECT * FROM "Category"');
   res.render('policy',{
-    pageTitle:` ${appName} policy`,
-    appName,
+    pageTitle:` policy`,
     userActive,
     allCategory,
     theme:req.session.theme
@@ -110,8 +107,7 @@ router.get('/faq', async(req, res) => {
   }
   const { rows: allCategory } = await query('SELECT * FROM "Category"');
   res.render('faq',{
-    pageTitle:` ${appName} faq`,
-    appName,
+    pageTitle:`faq`,
     userActive,
     allCategory,
     theme:req.session.theme
@@ -125,8 +121,7 @@ router.get('/featured-services', async(req, res) => {
   }
   const { rows: allCategory } = await query('SELECT * FROM "Category"');
   res.render('featured-services',{
-    pageTitle:` ${appName} featured-services`,
-    appName,
+    pageTitle:` featured-services`,
     userActive,
     allCategory,
     theme:req.session.theme
@@ -140,8 +135,7 @@ router.get('/contact', async (req, res) => {
   }
   const { rows: allCategory } = await query('SELECT * FROM "Category"');
   res.render('contact',{
-    pageTitle:` ${appName} contact`,
-    appName,
+    pageTitle:`contact`,
     userActive,
     allCategory,
     theme:req.session.theme
@@ -160,8 +154,7 @@ router.get('/terms', async(req, res) => {
   }
   const { rows: allCategory } = await query('SELECT * FROM "Category"');
   res.render('terms',{
-    pageTitle:` ${appName} terms`,
-    appName,
+    pageTitle:` terms`,
     userActive,
     allCategory,
     theme:req.session.theme
@@ -176,8 +169,7 @@ router.get('/abouts', async (req, res) => {
     userActive = true
   }
   res.render('abouts',{
-    pageTitle:` ${appName} | Abouts`,
-    appName,
+    pageTitle:` Abouts`,
     userActive,
     theme:req.session.theme
   });
@@ -218,7 +210,6 @@ router.get('/login', forwardAuthenticated, (req, res) =>{
     userActive = true
   }
   res.render('login',{
-  appName,
   theme:req.session.theme,
   userActive
   }
@@ -238,8 +229,7 @@ if (req.user) {
   }
   
   res.render('register',{
-    pageTitle:`Create account with ${appName}`,
-    appName,
+    pageTitle:`Create account with`,
     referralCode:referrerCode,
     stateData,
     theme:req.session.theme,
@@ -249,8 +239,7 @@ if (req.user) {
 );
 
 router.get('/forget', forwardAuthenticated, (req, res) => res.render('forget-password',{
-  pageTitle:`enter recovery email for  ${appName}`,
-  appName,
+  pageTitle:`enter recovery email for`,
   theme:req.session.theme
   }));
 
@@ -275,13 +264,11 @@ router.get("/getlgas/:state", (req, res) => {
 
 
 // paystack
-router.post('/pay', async (req, res) => {
+router.post('/pay',ensureAuthenticated, async (req, res) => {
   const { email, amount,contestantId, voteNumber} = req.body;
   
   req.session.voteNumber = voteNumber;
   req.session.contestantId = contestantId;
-
-  const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders" WHERE "id" = ${contestantId}`);
 
   try {
       const response = await axios.post('https://api.paystack.co/transaction/initialize', {
