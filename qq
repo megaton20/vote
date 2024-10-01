@@ -15,7 +15,7 @@ CREATE TABLE users (
 CREATE TABLE transactions (
     id SERIAL PRIMARY KEY,   -- Auto-incrementing ID for the transaction
     reference VARCHAR(255) NOT NULL,
-	votes_casted VARCHAR(255) NOT NULL,
+    votes_casted INT NOT NULL,   -- Changed to INT to store the number of votes
     amount DECIMAL(10, 2) NOT NULL,      
     status VARCHAR(50) NOT NULL,    
     email VARCHAR(255) NOT NULL,   
