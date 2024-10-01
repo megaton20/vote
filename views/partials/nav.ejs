@@ -10,28 +10,28 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
+            <a class="nav-link primary-color active" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/abouts">About</a>
+            <a class="nav-link primary-color" href="/abouts">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/contestants">Contestants</a>
+            <a class="nav-link primary-color" href="/contestants">Contestants</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/contestants/standings">Standing</a>
+            <a class="nav-link primary-color" href="/contestants/standings">Standing</a>
           </li>
           
           <% if(userActive == false){ %>
             <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
+              <a class="nav-link primary-color" href="/register">Register</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
+              <a class="nav-link primary-color" href="/login">Login</a>
             </li>
             <% } else{ %> 
               <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link text-danger" href="/logout">Logout</a>
               </li>
             <% } %>
           
@@ -50,27 +50,27 @@
     <div class="offcanvas-body">
       <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link primary-color active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/abouts">About</a>
+          <a class="nav-link primary-color" href="/abouts">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/contestants">Contestants</a>
+          <a class="nav-link primary-color" href="/contestants">Contestants</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/contestants/standings">Standing</a>
+          <a class="nav-link primary-color" href="/contestants/standings">Standing</a>
         </li>
         <% if(userActive == false){ %>
           <li class="nav-item">
-            <a class="nav-link" href="/register">Register</a>
+            <a class="nav-link primary-color" href="/register">Register</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link primary-color" href="/login">Login</a>
           </li>
           <% } else{ %> 
             <li class="nav-item">
-              <a class="nav-link" href="/logout">Logout</a>
+              <a class="nav-link text-danger" href="/logout">Logout</a>
             </li>
             <% } %>
       </ul>

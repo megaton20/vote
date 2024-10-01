@@ -38,13 +38,16 @@ if (!(email && password && passwordB )) {
 if (password !== passwordB) {
   errors.push({ msg: 'Passwords do not match' });
 }
-
-
+let userActive= false
+if (req.user) {
+  userActive = true
+}
 if (errors.length > 0) {
     return res.render('register', {
       errors,
       email,
       password,
+      userActive
     });
   }
 
@@ -61,6 +64,7 @@ if (errors.length > 0) {
         errors,
         email,
         password,
+        userActive
       });
     }
 

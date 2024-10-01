@@ -5,14 +5,60 @@ body {
 /* Semi-transparent white */
 #navbar {
   background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.my-container {
-  padding: 50px 15px;
+.text-heading{
+  color: #16a085;
 }
+.primary-color {
+  color: #0e8d09;
+}
+.secondary-color {
+  color: #e4a613;
+}
+
+.page-header{
+  height: 100px;
+  padding: 10px;
+  background-color: #0e8d09;
+  border-radius: 5px;
+  color: #e4a613;
+  text-transform: uppercase;
+  font-size: 20px;
+  margin-bottom: 70px;
+} 
 
 .values-section {
   text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.values-section .text{
+  border: 1px solid #0e8d09;
+  height: 170px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.values-section h4{
+  color: #0e8d09;
+}
+.mission-section {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.vision-section {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.other-abouts {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.font-italic{
+  font-style: italic;
 }
 
 .grid {
