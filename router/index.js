@@ -386,6 +386,7 @@ router.post('/webhook', (req, res) => {
 });
 
 
+
 // Logout route
 router.get('/logout',ensureAuthenticated, (req, res) => {
   req.logout(err => {
