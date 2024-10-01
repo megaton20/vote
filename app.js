@@ -38,7 +38,7 @@ app.use(session({
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' }
+    // cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
 app.use(methodOverride((req, res) => {
