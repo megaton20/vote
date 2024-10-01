@@ -69,6 +69,22 @@ exports.AdminPage = async (req, res) => {
         );
         const formatedallVotesAmount = allVotesAmount.toLocaleString("en-US");
 
+
+        const { rows: userTransactions } = await query(`
+        SELECT 
+        email,
+        user_id,
+        SUM(votes_casted) AS total_votes,
+        SUM(amount) AS total_amount_paid
+    FROM 
+        transactions
+    WHERE 
+        status = 'success'
+    GROUP BY 
+        email, user_id;
+        `);
+
+
     res.render("admin", {
       name: `${fname} ${lname}`,
       month: monthName,
@@ -81,7 +97,8 @@ exports.AdminPage = async (req, res) => {
       allContendersResult,
       failedTransactionTotalResult,
       formatedfailedTransactionAmount,
-      formatedallVotesAmount
+      formatedallVotesAmount,
+      userTransactions
     });
 
   } catch (error) {

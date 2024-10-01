@@ -106,7 +106,7 @@
 
     <!-- Table Section for Users that Voted -->
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 mt-2">
         <div class="card">
           <div class="card-header bg-dark text-white">
             <h5 class="card-title">Contestants </h5>
@@ -137,10 +137,40 @@
         </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6 mt-2">
         <div class="card">
           <div class="card-header bg-dark text-white">
             <h5 class="card-title">Users Who Voted</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Total Votes</th>
+                    <th>Total Amount Paid (₦)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% userTransactions.forEach(function(user) { %>
+                    <tr>
+                      <td><%= user.email %></td>
+                      <td><%= user.total_votes %></td>
+                      <td>₦ <%= user.total_amount_paid %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mt-2">
+        <div class="card">
+          <div class="card-header bg-dark text-white">
+            <h5 class="card-title">Users</h5>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -162,12 +192,6 @@
                          </tr> 
                          
                              <% }) %>
-
-             
-               
-                 
-                  
-
                       </tbody>
               </table>
           </div>
