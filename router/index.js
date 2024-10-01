@@ -7,7 +7,7 @@ const query = promisify(db.query).bind(db);
 const passport = require('../config/passport');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const stateData = require("../model/stateAndLGA");
-
+const crypto = require('crypto');
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY ;
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
@@ -272,7 +272,12 @@ router.post('/pay',ensureAuthenticated, async (req, res) => {
       const response = await axios.post('https://api.paystack.co/transaction/initialize', {
           email,
           amount: amount * 100, // Paystack expects the amount in kobo
-           callback_url: `${process.env.LIVE_DIRR || `http://localhost:${process.env.PORT}`}/verify`
+           callback_url: `${process.env.LIVE_DIRR || process.env.NGROK_URL || `http://localhost:${process.env.PORT}`}/verify`,
+           metadata: {
+            userId: req.user.id, // Include user ID from session
+            contestantId: contestantId,
+            voteNumber: voteNumber,
+          }
       }, {
           headers: {
               Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
@@ -289,12 +294,93 @@ router.post('/pay',ensureAuthenticated, async (req, res) => {
 
 
 
+// router.get('/verify',ensureAuthenticated, async (req, res) => {
+
+//   const reference = req.query.reference;
+
+//   if (!reference) {
+//     req.flash('error_msg', 'No reference provided');
+//     return res.redirect('/');
+//   }
+
+//   try {
+//     // Verify transaction with Paystack
+//     const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
+//       headers: {
+//         Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+//       }
+//     });
+
+//     if (response.data.status && response.data.data.status === 'success') {
+//       // Extract transaction details
+//       const { id, reference, amount, status, customer: { email }, paid_at } = response.data.data;
+
+//       // Save transaction details to the database
+//       const d = `INSERT INTO "transactions" ("reference", "amount", "status", "email", "paid_at", "user_id", "contendant_id", "votes_casted") 
+//       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+
+//       await query(d, [ reference, amount / 100, status, email, paid_at, req.user.id, req.session.contestantId,req.session.voteNumber]);
+
+      
+//       // Fetch the user's current cashback using req.session.id
+//       const  contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
+//       const {rows:contenderResults} = await db.query(contenderQuery, [req.session.contestantId]);
+//       const currentVoteCount = contenderResults[0].vote_count;
+
+//       const newVote = currentVoteCount + req.session.voteNumber
+
+//         // Update user's cashback
+//       const voteCountQuery = `UPDATE "contenders" SET "vote_count" = $1 WHERE "id" = $2`;
+//       await db.query(voteCountQuery, [newVote, req.session.contestantId]);
+
+
+//       // No error, redirect to order page
+//       req.flash("success_msg",`${req.session.voteNumber} vote has been submited for ${contenderResults[0].fname} ${contenderResults[0].lname}`)
+//       return res.redirect(`/contestants`);
+//     } else {
+//       // Handle failed verification
+//       console.log('Payment verification failed:', response.data.data);
+//       req.flash('error_msg', 'Payment unsuccessful');
+//       return res.redirect('/');
+//     }
+//   } catch (error) {
+//     console.log(error);
+
+//     try {
+
+//       const getItemQuery = `SELECT * FROM "transactions" WHERE "reference" = $1 AND "email" = $2 `;
+//       const { rows: results } = await query(getItemQuery, [reference, req.user.email]);
+  
+//       if(results.length > 0) {
+
+//         const updateCashbackQuery = `UPDATE "transactions" SET "status" = $1 WHERE "reference" = $2`;
+//         await db.query(updateCashbackQuery, ["failed", results.reference]);
+        
+//         console.error('system Error verifying flaging payment succesful:', error);
+//         req.flash('error_msg', 'Server error, flaging payment succesful');
+//         return res.redirect('/');
+//       }
+
+//     } catch (error) {
+
+//       console.error('system Error verifying and flaging payment unsuccesful:', error);
+//       req.flash('error_msg', 'Server error, flaging payment unsuccesful');
+//       return res.redirect('/');
+
+//     }
+//   }
+// });
+
+
+
+
+
 router.get('/verify', async (req, res) => {
   const reference = req.query.reference;
 
   if (!reference) {
     req.flash('error_msg', 'No reference provided');
-    return res.redirect('/');
+    return res.redirect('/contestants');
   }
 
   try {
@@ -306,82 +392,106 @@ router.get('/verify', async (req, res) => {
     });
 
     if (response.data.status && response.data.data.status === 'success') {
-      // Extract transaction details
-      const { id, reference, amount, status, customer: { email }, paid_at } = response.data.data;
+      // Check if the transaction has already been handled by the webhook
+        req.flash('success_msg', `Payment successful! ${req.session.voteNumber} vote(s) casted.`);
+        return res.redirect('/contestants');
 
-      // Save transaction details to the database
-      const d = `INSERT INTO "transactions" ("reference", "amount", "status", "email", "paid_at", "user_id", "contendant_id", "votes_casted") 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
-
-      await query(d, [ reference, amount / 100, status, email, paid_at, req.user.id, req.session.contestantId,req.session.voteNumber]);
-
-      
-      // Fetch the user's current cashback using req.session.id
-      const  contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
-      const {rows:contenderResults} = await db.query(contenderQuery, [req.session.contestantId]);
-      const currentVoteCount = contenderResults[0].vote_count;
-
-      const newVote = currentVoteCount + req.session.voteNumber
-
-        // Update user's cashback
-      const voteCountQuery = `UPDATE "contenders" SET "vote_count" = $1 WHERE "id" = $2`;
-      await db.query(voteCountQuery, [newVote, req.session.contestantId]);
-
-
-      // No error, redirect to order page
-      req.flash("success_msg",`${req.session.voteNumber} vote has been submited for ${contenderResults[0].fname} ${contenderResults[0].lname}`)
-      return res.redirect(`/contestants`);
     } else {
-      // Handle failed verification
-      console.log('Payment verification failed:', response.data.data);
-      req.flash('error_msg', 'Payment unsuccessful');
-      return res.redirect('/');
+      // Handle failed verification from Paystack
+      req.flash('error_msg', 'Payment verification failed.');
+      return res.redirect('/contestants');
     }
   } catch (error) {
-    console.log(error);
-
-    try {
-
-      const getItemQuery = `SELECT * FROM "transactions" WHERE "reference" = $1 AND "email" = $2 `;
-      const { rows: results } = await query(getItemQuery, [reference, req.user.email]);
-  
-      if(results.length > 0) {
-
-        const updateCashbackQuery = `UPDATE "transactions" SET "status" = $1 WHERE "reference" = $2`;
-        await db.query(updateCashbackQuery, ["failed", results.reference]);
-        
-        console.error('system Error verifying flaging payment succesful:', error);
-        req.flash('error_msg', 'Server error, flaging payment succesful');
-        return res.redirect('/');
-      }
-
-    } catch (error) {
-
-      console.error('system Error verifying and flaging payment unsuccesful:', error);
-      req.flash('error_msg', 'Server error, flaging payment unsuccesful');
-      return res.redirect('/');
-
-    }
+    console.error('Error verifying payment:', error);
+    req.flash('error_msg', 'Server error');
+    return res.redirect('/contestants');
   }
 });
 
 
 
-// webhook
-router.post('/webhook', (req, res) => {
-  const hash = crypto.createHmac('sha512', WEBHOOK_SECRET).update(JSON.stringify(req.body)).digest('hex');
-  if (hash === req.headers['x-paystack-signature']) {
-      const event = req.body;
-      switch (event.event) {
-          case 'charge.success':
-              console.log('Payment successful:', event.data);
-              break;
-          // Add more event types as needed
-      }
+router.post('/webhook', async (req, res) => {
+  // Verify Paystack webhook signature
+  const hash = crypto.createHmac('sha512', PAYSTACK_SECRET_KEY)
+                     .update(JSON.stringify(req.body))
+                     .digest('hex');
 
-      res.sendStatus(200);
+  // Check if the signature is valid
+  if (hash === req.headers['x-paystack-signature']) {
+    const event = req.body;
+
+    try {
+      // Handle successful payments
+      if (event.event === 'charge.success') {
+        
+        const { 
+          reference, 
+          amount, 
+          status, 
+          customer: { email }, 
+          paid_at, 
+          metadata 
+        } = event.data;
+        // Get voteNumber, contestantId, and userId from metadata
+        const { voteNumber, contestantId, userId } = metadata;
+
+        // Check if transaction already exists in the database to prevent duplication
+        const existingTransactionQuery = `SELECT * FROM "transactions" WHERE "reference" = $1`;
+        const { rows: existingTransaction } = await db.query(existingTransactionQuery, [reference]);
+
+        if (existingTransaction.length === 0) {
+          // Save transaction details to the database
+          const transactionQuery = `INSERT INTO "transactions" 
+            ("reference", "amount", "status", "email", "paid_at", "user_id", "contendant_id", "votes_casted") 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+          
+          await db.query(transactionQuery, [
+            reference, 
+            amount / 100,  // Convert kobo back to naira
+            status, 
+            email, 
+            paid_at, 
+            userId, 
+            contestantId, 
+            voteNumber
+          ]);
+
+          // Fetch current vote count of the contestant
+          const contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
+          const { rows: contenderResults } = await db.query(contenderQuery, [contestantId]);
+
+          if (contenderResults.length > 0) {
+            const currentVoteCount = contenderResults[0].vote_count;
+
+            // Calculate new vote total
+            const newVote = parseInt(currentVoteCount, 10) + parseInt(voteNumber, 10);
+            
+            // Update vote count in "contenders" table
+            const voteCountQuery = `UPDATE "contenders" SET "vote_count" = $1 WHERE "id" = $2`;
+            await db.query(voteCountQuery, [newVote, contestantId]);
+
+            console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
+          } else {
+            console.log(`No contestant found with ID: ${contestantId}`);
+          }
+
+          // Send 200 OK after processing successfully
+          return res.sendStatus(200);
+        } else {
+          console.log('Transaction already exists, no need to insert.');
+          return res.sendStatus(200); // Acknowledge the webhook
+        }
+      } else {
+        console.log(`Unhandled event type: ${event.event}`);
+        return res.sendStatus(200); // Acknowledge unhandled events
+      }
+    } catch (error) {
+      console.error('Error processing Paystack webhook:', error);
+      return res.sendStatus(500); // Server error
+    }
   } else {
-      res.sendStatus(400);
+    console.log('Invalid webhook signature');
+    return res.sendStatus(400); // Invalid signature
   }
 });
 

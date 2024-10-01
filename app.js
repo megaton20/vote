@@ -37,7 +37,8 @@ app.use(session({
     secret: process.env.SESSION_SECRET, 
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
 app.use(methodOverride((req, res) => {
@@ -114,7 +115,7 @@ app.use('/admin', superRouter);
     });
   });
 
-const PORT = process.env.PORT || 3000;
+const PORT =  process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
