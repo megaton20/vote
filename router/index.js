@@ -412,9 +412,12 @@ router.post('/webhook', async (req, res) => {
             return  console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
             }
             
+            const updateTransaction = `UPDATE "transactions" SET "old_vote" = $1, "new_vote" = $2 WHERE "id" = $3`;
+            await db.query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
             console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
-            console.log('transaction was not updated');
+            console.log('transaction was updated outside');
 
+            return 
             // 
           } else {
             console.log(`No contestant found with ID: ${contestantId}`);
