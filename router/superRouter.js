@@ -9,10 +9,9 @@ const { ensureAuthenticated } = require("../config/auth");
 // router.post('/add-image/:id',ensureAuthenticated,isSuper,upload.single('image'),superController.updateImage)
 // Welcome Page
 router.get("/", ensureAuthenticated,isSuper, superController.AdminPage);
+router.get("/transactions", ensureAuthenticated,isSuper, superController.transactions);
 
 // all table Page
 // router.get("/all-contestants", ensureAuthenticated,isSuper, superController.getAllCustomers);
-// router.get("/all-users", ensureAuthenticated,isSuper, superController.getAllEmployees);
-// router.get("/all-transactions", ensureAuthenticated,isSuper, superController.getAllTransactions);
 
 module.exports = router;

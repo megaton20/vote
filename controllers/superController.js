@@ -109,5 +109,30 @@ exports.AdminPage = async (req, res) => {
 };
 
 
+exports.transactions = async (req, res) => {
+  const fname = req.user.fname;
+  const lname = req.user.lname;
+
+  try {
+
+    const { rows: userTransactions } = await query(`SELECT * FROM transactions;`);
+
+    res.render("transactions", {
+      name: `${fname} ${lname}`,
+      month: monthName,
+      day: dayName,
+      date: presentDay,
+      year: presentYear,
+      userActive: true,
+      userTransactions
+    });
+
+  } catch (error) {
+    console.log(error);
+    req.flash("error_msg", `Server Error`);
+    return res.redirect("/");
+  }
+};
+
 
 

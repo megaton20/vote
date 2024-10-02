@@ -1,0 +1,112 @@
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/admin">Admin</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav" aria-controls="offcanvasNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <span class="text-light ms-auto" id="currentDate"></span>
+    </div>
+  </nav>
+
+  <!-- Offcanvas Menu for Mobile -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNav" aria-labelledby="offcanvasNavLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasNavLabel">Admin Panel</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Votes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/transactions">Transactions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contestants">contestants</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contestants/standings">standings</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Admin Panel Content -->
+  <div class="container-fluid p-4">
+
+
+    <!-- Table Section for Users that Voted -->
+    <div class="row">
+
+
+      <div class="col-md-6 mt-2">
+        <div class="card">
+          <div class="card-header bg-dark text-white">
+            <h5 class="card-title">Users Who Voted</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>Email</th>
+                    <th>Votes paid for</th>
+                    <th>Amount Paid (₦)</th>
+                    <th>Status</th>
+                    <th>old Vote</th>
+                    <th>New vote aquired</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% userTransactions.forEach(function(user) { %>
+                    <tr>
+                      <td><%= user.id %></td>
+                      <td><%= user.email %></td>
+                      <td><%= user.votes_casted %></td>
+                      <td>₦ <%= user.amount %></td>
+                      <td><%= user.status %></td>
+                      <td>
+                        <% if (user.old_vote) { %>
+                          <%= user.old_vote %>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                      <td>
+                        <% if (user.new_vote) { %>
+                          <%= user.new_vote %>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Display current date
+    document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
+  </script>

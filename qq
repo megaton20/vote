@@ -21,7 +21,9 @@ CREATE TABLE transactions (
     email VARCHAR(255) NOT NULL,   
     paid_at TIMESTAMP NOT NULL,
     user_id INT NOT NULL,
-    contendant_id INT NOT NULL
+    contendant_id INT NOT NULL,
+     old_vote INT NULL,
+     new_vote INT NULL,
 );
 
 
