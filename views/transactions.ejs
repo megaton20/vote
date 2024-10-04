@@ -48,7 +48,7 @@
     <div class="row">
 
 
-      <div class="col-md-6 mt-2">
+      <div class="col-md-12 mt-2">
         <div class="card">
           <div class="card-header bg-dark text-white">
             <h5 class="card-title">Users Who Voted</h5>
@@ -60,11 +60,13 @@
                   <tr>
                     <th>id</th>
                     <th>Email</th>
+                    <th>contestants</th>
+                    <th>New vote aquired</th>
+                    <th>old Vote</th>
+
                     <th>Votes paid for</th>
                     <th>Amount Paid (₦)</th>
                     <th>Status</th>
-                    <th>old Vote</th>
-                    <th>New vote aquired</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -72,16 +74,7 @@
                     <tr>
                       <td><%= user.id %></td>
                       <td><%= user.email %></td>
-                      <td><%= user.votes_casted %></td>
-                      <td>₦ <%= user.amount %></td>
-                      <td><%= user.status %></td>
-                      <td>
-                        <% if (user.old_vote) { %>
-                          <%= user.old_vote %>
-                        <% } else { %>
-                          N/A
-                        <% } %>
-                      </td>
+                      <td><%= user.contendant_id %></td>
                       <td>
                         <% if (user.new_vote) { %>
                           <%= user.new_vote %>
@@ -89,6 +82,20 @@
                           N/A
                         <% } %>
                       </td>
+
+                      <td>
+                        <% if (user.old_vote) { %>
+                          <%= user.old_vote %>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                   
+
+                      <td><%= user.votes_casted %></td>
+                      <td>₦ <%= user.amount %></td>
+                      <td><%= user.status %></td>
+                   
                     </tr>
                   <% }) %>
                 </tbody>
