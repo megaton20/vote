@@ -1,46 +1,36 @@
 <% if(locals.errors){ %> 
   <% errors.forEach(function(error) { %>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="alert  alert-warning fade show" role="alert">
       <strong><i class="bi bi-exclamation-triangle-fill"></i> Oops!</strong> <%= error.msg %>  
       
-      
-      </button>
     </div>
   <% }); %> 
 <% } %>
 
 <% if(success_msg != ''){ %>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <div class="alert  alert-success fade show" role="alert">
     <strong><i class="bi bi-check-circle-fill"></i> Good!</strong> <%= success_msg %> 
     
-    
-    </button>
   </div>
 <% } %>
 
 <% if(error_msg != ''){ %>
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <div class="alert  alert-danger fade show" role="alert">
     <strong><i class="bi bi-exclamation-circle-fill"></i> Psss!</strong> <%= error_msg %>
     
-    
-    </button>
   </div>
 <% } %>
 
 <% if(error != ''){ %>
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <div class="alert  alert-danger fade show" role="alert">
     <strong><i class="bi bi-x-circle-fill"></i> Oh no!</strong> <%= error %> 
     
-    
-    </button>
   </div>
 <% } %>
 
 <% if(warning_msg != ''){ %>
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <div class="alert  alert-warning fade show" role="alert">
     <strong><i class="bi bi-exclamation-triangle-fill"></i> Watch out!</strong> <%= warning_msg %>
     
-    
-    </button>
   </div>
 <% } %>

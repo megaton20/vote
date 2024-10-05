@@ -236,10 +236,19 @@ if (req.user) {
 } 
 );
 
-router.get('/forget', forwardAuthenticated, (req, res) => res.render('forget-password',{
+router.get('/forget', forwardAuthenticated, (req, res) =>{
+  let userActive= false
+  if (req.user) {
+    userActive = true
+  }
+
+  res.render('forget-password',{
   pageTitle:`enter recovery email for`,
-  theme:req.session.theme
-  }));
+  theme:req.session.theme,
+  theme:req.session.theme,
+  userActive
+  })
+});
 
 
   
