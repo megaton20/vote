@@ -21,6 +21,7 @@ const authRouter = require('./router/auth');
 const userRouter = require('./router/userRouter');
 const contestantsRouter = require('./router/contestantsRouter');
 const superRouter = require('./router/superRouter');
+const {stopActions,mentainanceAction} = require('./middlewares/atWork');
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -77,11 +78,11 @@ app.post('/toggle-theme', (req, res) => {
     res.redirect('back');
   });
 
-app.use('/', openRoutes);
-app.use('/auth', authRouter);
-app.use('/user', userRouter);
-app.use('/contestants', contestantsRouter);
-app.use('/admin', superRouter);
+app.use('/',stopActions, openRoutes);
+app.use('/auth',stopActions, authRouter);
+app.use('/user',stopActions, userRouter);
+app.use('/contestants',stopActions, contestantsRouter);
+app.use('/admin',stopActions, superRouter);
 
 
   // 404 Error handler for undefined routes
