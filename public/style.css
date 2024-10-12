@@ -97,6 +97,12 @@ footer a:hover {
 }
 
 
+/* Custom CSS to ensure the row is styled */
+.text-danger-row {
+  background-color: #f8d7da !important; /* Light red background */
+  color: #721c24 !important; /* Dark red text */
+}
+
 
 /* 404 page */
 

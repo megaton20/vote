@@ -5,9 +5,9 @@
 <br>
 <br>
 <div class="container">
-    <div class="matches">
+
   
-        <div class="container mb-4">
+        <div class="container mb-2">
             <div class="page-header">
                 <div class=" text-center ">
                     <h4 class="display-4">As It Stands</h4>
@@ -15,40 +15,51 @@
             </div>  
         </div>
 
+        <div class="">
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i> <!-- Bootstrap Icons -->
+                <div>
+                  Eviction takes place tomorrow, Sunday, 13th of October 2024, and points below 200. We will be evicted from the voting contest.
+                </div>
+              </div>
+        </div>
         <br>
 
               <div class="table-responsive">
-                  <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
-                          <tr>
-                            <th>Name </th>
-                            <th>Total Vote </th>
-                            <th>Total Points </th>
-                          </tr>
-                      </thead>
-                  
-                      <tbody>
-                    
-                          <% standings.forEach(function(data) {%>
+                <table class="table table-striped" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Total Vote</th>
+                          <th>Total Points</th>
+                          <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% standings.forEach(function(data, index) { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= data['fname'] %> <%= data['lname'] %></td>
+                               <!-- Votes -->
+                            <td class="<%= data['vote_count'] < 30 ? 'text-danger' : data['vote_count'] < 50 ? 'text-warning' : 'text-success' %>">
+                                <%= data['vote_count'] %>
+                            </td>
 
-                              <tr>
-                                  <td><%= data['fname'] %>  <%= data['lname'] %> </td>
-                                  <td><%= data['vote_count'] %></td>
-                                  <td><%= data['points'] %></td>
-                             </tr> 
-                             
-                                 <% }) %>
-
-                 
-                   
-                     
-                      
-
-                          </tbody>
+                            <!-- Points -->
+                            <td class="<%= data['points'] < 200 ? 'text-danger' : data['points'] < 500 ? 'text-warning' : 'text-success' %>">
+                                <%= data['points'] %>
+                            </td>
+                                <td class="<%= data['status'] === 'eviction' ? 'text-danger' : '' %>">
+                                    <%= data['status'] === 'eviction' ? 'Up for Eviction' : 'Active' %>
+                                </td>
+                            </tr> 
+                        <% }) %>
+                    </tbody>
                   </table>
               </div>
 
-    </div>
+
 </div>
 
 <br>
