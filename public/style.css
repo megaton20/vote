@@ -32,7 +32,17 @@ body {
   font-size: 20px;
   margin-bottom: 30px;
 } 
+.my-btn {
+  background: rgb(34, 139, 34); /* Fallback for older browsers */
+  background: linear-gradient(90deg, rgba(34, 139, 34, 1) 0%, rgb(226, 195, 16) 100%);
+  color: #f2f2f2;
+  border: none;
+}
+.my-btn:hover {
 
+  color: #f2f2f2;
+  border: none;
+}
 .values-section {
   text-align: center;
   margin-top: 30px;

@@ -7,7 +7,7 @@
 <div class="container">
 
   
-        <div class="container mb-2">
+        <div class=" mb-2">
             <div class="page-header">
                 <div class=" text-center ">
                     <h4 class="display-4">As It Stands</h4>
@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                           <th>#</th>
+                          <th>image</th>
                           <th>Name</th>
                           <th>Total Vote</th>
                           <th>Total Points</th>
@@ -40,6 +41,7 @@
                         <% standings.forEach(function(data, index) { %>
                             <tr>
                                 <td><%= index + 1 %></td>
+                                <td><img class="img-thumbnail" style="max-width: 40px;" src="<%= data.photo_url %>" alt="image"></td>
                                 <td><%= data['fname'] %> <%= data['lname'] %></td>
                                <!-- Votes -->
                             <td class="<%= data['vote_count'] < 30 ? 'text-danger' : data['vote_count'] < 50 ? 'text-warning' : 'text-success' %>">
