@@ -36,29 +36,29 @@ router.get('/',ensureAuthenticated, async (req, res) => {
 });
 
 router.get('/standings', async (req, res) => {
-  let userActive= false
+  let userActive = false;
   if (req.user) {
-    userActive = true
+    userActive = true;
   }
   try {
-    // const matches = await getUsers(req);
-    const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders" ORDER BY "vote_count" DESC`);
+    const { rows: contestantsQuery } = await query(`SELECT * FROM "contenders" ORDER BY "vote_count" DESC`);
 
-    // Calculate points for each contender
+    // Calculate points for each contender and set status
     contestantsQuery.forEach(contender => {
       contender.points = contender.vote_count * 2; // 1 vote = 2 points
+      // Set status based on points
+      contender.status = contender.points < 200 ? 'eviction' : 'active';
     });
-    
 
     res.render('standing', {
-      standings:contestantsQuery,
-       theme: req.session.theme,
-       userActive,
+      standings: contestantsQuery,
+      theme: req.session.theme,
+      userActive,
     });
   } catch (error) {
     console.log(error);
-    req.flash('error_msg',`fialed to get data`)
-    res.redirect('/')
+    req.flash('error_msg', `Failed to get data`);
+    res.redirect('/');
   }
 });
 

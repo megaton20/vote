@@ -19,7 +19,7 @@
             <div class="alert alert-warning d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i> <!-- Bootstrap Icons -->
                 <div>
-                  Eviction takes place tomorrow, Sunday, 13th of October 2024, and points below 200. We will be evicted from the voting contest.
+                  Eviction takes place tomorrow, Sunday, 13th of October 2024, and points below 200. We will be evicted from the contest.
                 </div>
               </div>
         </div>
@@ -50,7 +50,7 @@
                             <td class="<%= data['points'] < 200 ? 'text-danger' : data['points'] < 500 ? 'text-warning' : 'text-success' %>">
                                 <%= data['points'] %>
                             </td>
-                                <td class="<%= data['status'] === 'eviction' ? 'text-danger' : '' %>">
+                                <td class="<%= data['status'] === 'eviction' ? 'text-danger' : 'text-success' %>">
                                     <%= data['status'] === 'eviction' ? 'Up for Eviction' : 'Active' %>
                                 </td>
                             </tr> 
