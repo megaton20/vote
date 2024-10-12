@@ -19,11 +19,15 @@ body {
 }
 
 .page-header{
-  height: 100px;
+  height: 130px;
   padding: 10px;
-  background-color: #0e8d09;
+  background: rgb(34, 139, 34); /* Fallback for older browsers */
+  background: linear-gradient(90deg, rgba(34, 139, 34, 1) 0%, rgb(226, 195, 16) 100%);
   border-radius: 5px;
-  color: #e4a613;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
   text-transform: uppercase;
   font-size: 20px;
   margin-bottom: 30px;
