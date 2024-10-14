@@ -1,30 +1,25 @@
 <%- include('./partials/nav') %>
 
-<br>
-<br>
-<br>
-<br>
-<div class="container">
 
-  
-        <div class=" mb-2">
-            <div class="page-header">
-                <div class=" text-center ">
-                    <h4 class="display-4">As It Stands</h4>
-                </div>
-            </div>  
+
+<div class=" mb-2">
+    <div class="page-header">
+        <div class=" text-center ">
+            <h4 class="display-4">As It Stands</h4>
         </div>
+    </div>  
+</div>
 
-        <!-- <div class="">
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i> 
-                <div>
-                  Eviction takes place tomorrow, Sunday, 13th of October 2024, and points below 200. We will be evicted from the contest.
-                </div>
-              </div>
-        </div> -->
-        <br>
+<!-- <div class="">
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i> 
+        <div>
+            Eviction takes place tomorrow, Sunday, 13th of October 2024, and points below 200. We will be evicted from the contest.
+        </div>
+    </div>
+</div> -->
 
+<div class="container">
               <div class="table-responsive">
                 <table class="table table-striped" width="100%" cellspacing="0">
                     <thead>
@@ -38,7 +33,7 @@
                     </thead>
                     <tbody>
                         <% standings.forEach(function(data, index) { %>
-                            <tr>
+                            <tr data-aos="fade-up" data-aos-delay="100">
                                 <td><%= index + 1 %></td>
                                 <td><%= data['fname'] %> <%= data['lname'] %></td>
                                <!-- Votes -->

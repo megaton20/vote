@@ -2,54 +2,126 @@
 
 
 <%- include ('./partials/nav') %>
-<!-- Hero Section Carousel -->
-<section id="hero-carousel" class="carousel slide vh-100" data-bs-ride="carousel">
-  <div class="carousel-inner h-100">
-    <!-- Slide 1 -->
-    <div class="carousel-item active h-100">
-      <div class="h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('/img/cs.jpg'); background-size: cover; background-position: center;">
 
-      </div>
-    </div>
-    <!-- Slide 2 -->
+<!-- Hero Section -->
+<section id="hero" class="hero text-center">
+  <div class="container">
 
-    <div class="carousel-item h-100">
-      <div class="h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('/img/3.jpg'); background-size: cover; background-position: center;">
-        <div class="text-center">
-          <h1 class="display-4 fw-bold">Welcome To The Carnival Queen Pageant</h1>
-          <p class="lead primary-color"> Register and Vote for any contestant of your choice by selecting the number of votes</p>
-          <a href="/abouts" class="btn btn-success btn-lg">Learn More</a>
+    <div class="mt-5"></div>
+    <br>
+    <br>
+    <!-- Carousel starts -->
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+      
+      <!-- Carousel Items -->
+      <div class="carousel-inner">
+        <!-- First Item -->
+        <div class="carousel-item active">
+          <div class="row align-items-center">
+            <!-- Text Section (col-8 on larger screens, col-12 on mobile) -->
+            <div class="col-lg-8 col-md-8 col-sm-12 text-start">
+              <h1 data-aos="fade-up" data-aos-delay="100">Welcome To The Carnival Queen Pageant</h1>
+              <p data-aos="fade-up" data-aos-delay="200">
+                where we celebrate  women's empowerment, cultural diversity  and community development.
+              </p>
+            </div>
+            <!-- Image Section (col-4 on larger screens, col-12 on mobile) -->
+            <div class="col-lg-4 col-md-4 col-sm-12" data-aos="fade-up" data-aos-delay="300">
+             <div class="rounded-image">
+              <img src="/img/mm.jpg" class="img-fluid " alt="Hero Image">
+             </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="carousel-item h-100">
-      <div class="h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('/img/mm.JPG'); background-size: cover; background-position: center;">
-        <div class="text-center">
-          <h1 class="display-4 fw-bold">Welcome To The Carnival Queen Pageant</h1>
-          <p class="lead"> where we celebrate  women's empowerment, cultural diversity <br>  and community development.</p>
-          <a href="/abouts" class="btn btn-success btn-lg">Learn More</a>
+        <!-- Second Item -->
+        <div class="carousel-item">
+          <div class="row align-items-center">
+            <!-- Text Section (col-8 on larger screens, col-12 on mobile) -->
+            <div class="col-lg-8 col-md-8 col-sm-12 text-start">
+              <h1>Welcome To The Carnival Queen Pageant</h1>
+              <p>
+                Discover new ways to enhance your business and reach your goals faster.
+              </p>
+            </div>
+            <!-- Image Section (col-4 on larger screens, col-12 on mobile) -->
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              <div class="rounded-image">
+                <img src="/img/mm-2.jpg" class="img-fluid " alt="Second Hero Image">
+
+              </div>
+            </div>
+          </div>
         </div>
+        <!-- Add more carousel items as needed -->
+      </div>
+
+      <!-- Carousel Controls positioned at the bottom -->
+      <div class="carousel-controls text-center mt-4">
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
-
+    <!-- Carousel ends -->
   </div>
-
-  <!-- Carousel Controls -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
 </section>
+
+<style>
+  /* Custom CSS to reposition the carousel controls */
+  .carousel-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    bottom: 0;
+    margin-top: 30px;
+  }
+
+  .carousel-control-prev, .carousel-control-next {
+    border-radius: 50%;
+    padding: 10px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carousel-control-prev-icon, .carousel-control-next-icon {
+    filter: invert(1); /* Makes the icons visible on a colored background */
+  }
+
+  .rounded-image{
+    border-radius: 50%;
+    height: 450px;
+    
+  }
+</style>
+
+
+<br>
+<br>
 
 <main class="container">
   <!-- About Section -->
-<section id="about" class="py-5 bg-light">
-  <div class="container">
+      <!-- Section Title -->
+      <div class="container section-title mt-2" data-aos="fade-up" data-aos-delay="100">
+        <h2>About us</h2>
+        <p>Get To know us </p>
+      </div><!-- End Section Title -->
+
+
+<section id="about" class="py-5 bg-light" >
+
+  
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
     <div class="row align-items-center">
       <div class="col-md-6">
         <img src="/img/qq.jpg" class="img-fluid rounded shadow" alt="About Image">
@@ -63,7 +135,7 @@
 </section>
 
 <!-- Vision Section -->
-<section id="vision" class="py-5 bg-light">
+<section id="vision" class="py-5 bg-light" data-aos="fade-up" data-aos-delay="100">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-6 order-md-2">
@@ -79,7 +151,7 @@
 
 <!-- Contestants Section -->
 <section id="contestants" class="py-5">
-  <div class="container text-center">
+  <div class="container text-center" data-aos="fade-up" data-aos-delay="100">
     <h2 class="mb-5">Our Contestants</h2>
     <div class="row">
       <% contestants.forEach((data) => { %>
