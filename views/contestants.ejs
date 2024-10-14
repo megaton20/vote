@@ -12,8 +12,8 @@
 
       <div class="row">
         <% contestants.forEach((data) => { %>
-          <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="card contender" data-id="<%= data.id %>">
+          <div class="col-md-3 mb-4">
+            <div class="card contender" data-id="<%= data.id %>" data-aos="fade-up" data-aos-delay="100">
               <div class="user-images">
                 <div class="image-gallery">
                   <img src="<%= data.photo_url %>" class="card-img-top" alt="<%= data.fname %> <%= data.lname %>">
