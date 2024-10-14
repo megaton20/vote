@@ -69,13 +69,27 @@ const votePrice = 100;  // Default price per vote
 function updateVoteAndPrice(card, currentVotes) {
   const voteNumberElement = card.querySelector('.voteNumber');
   const sumTotalElement = card.querySelector('.sumTotal');
-  const paymentAmountElement = card.querySelector('.paymentAmount');
-  
+  const paymentAmountElement = card.querySelector('.paymentAmount');  // Button span to show payment amount
+  const amountInputElement = card.querySelector('.amountInput');  // Hidden input holding the amount
+
+  // Calculate total price based on current votes
   const totalPrice = currentVotes * votePrice;
-  
-  voteNumberElement.textContent = currentVotes;  // Update vote count
-  sumTotalElement.textContent = totalPrice;  // Update total price
-  paymentAmountElement.textContent = totalPrice;  // Update payment amount
+
+  // Check if elements exist before updating
+  if (voteNumberElement) {
+    voteNumberElement.textContent = currentVotes;  // Update vote count display
+  }
+  if (sumTotalElement) {
+    sumTotalElement.textContent = totalPrice;  // Update total price display
+  }
+  if (paymentAmountElement) {
+    paymentAmountElement.textContent = totalPrice;  // Update button display amount
+  }
+  if (amountInputElement) {
+    amountInputElement.value = totalPrice;  // Update hidden input field with the total price
+  } else {
+    console.error('Hidden amount input not found for contestant', card.getAttribute('data-id'));
+  }
 }
 
 // Loop through each contestant card and add event listeners
@@ -87,20 +101,25 @@ document.querySelectorAll('.card.contender').forEach(card => {
   const increaseBtn = card.querySelector(`.increaseVotes[data-id='${contestantId}']`);
   const paymentForm = card.querySelector(`#paymentForm-${contestantId}`);
 
+  // Initialize with default values
+  updateVoteAndPrice(card, currentVotes); 
+
   if (increaseBtn && decreaseBtn) {
     // Increase votes
     increaseBtn.addEventListener('click', function() {
       currentVotes++;
-      updateVoteAndPrice(card, currentVotes);
+      updateVoteAndPrice(card, currentVotes);  // Update the display when votes are increased
     });
 
     // Decrease votes
     decreaseBtn.addEventListener('click', function() {
       if (currentVotes > 1) {
         currentVotes--;
-        updateVoteAndPrice(card, currentVotes);
+        updateVoteAndPrice(card, currentVotes);  // Update the display when votes are decreased
       }
     });
+  } else {
+    console.error(`Increase or Decrease button not found for contestant ${contestantId}`);
   }
 
   if (paymentForm) {
@@ -109,8 +128,16 @@ document.querySelectorAll('.card.contender').forEach(card => {
       e.preventDefault();
       
       const email = card.querySelector(`#email-${contestantId}`).value;
-      const finalAmount = parseFloat(card.querySelector(`#paymentAmount-${contestantId}`).textContent);  // Get updated total amount
+      const finalAmount = parseFloat(card.querySelector(`#amount-${contestantId}`).value);  // Get updated total amount from hidden input
       const voteNumber = currentVotes;  // Get the current vote number
+
+      // Debugging output for confirmation
+      console.log('Submitting form with data:', {
+        email,
+        amount: Math.floor(finalAmount),
+        contestantId,
+        voteNumber
+      });
 
       // Make Paystack payment request
       fetch('/pay', {
@@ -133,8 +160,11 @@ document.querySelectorAll('.card.contender').forEach(card => {
         alert('An error occurred. Please try again.');
       });
     });
+  } else {
+    console.error(`Payment form not found for contestant ${contestantId}`);
   }
 });
+
 
   </script>
   

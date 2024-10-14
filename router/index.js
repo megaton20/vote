@@ -357,6 +357,7 @@ router.get('/verify', async (req, res) => {
 
 
 router.post('/webhook', async (req, res) => {
+
   // Verify Paystack webhook signature
   const hash = crypto.createHmac('sha512', PAYSTACK_SECRET_KEY)
                      .update(JSON.stringify(req.body))
