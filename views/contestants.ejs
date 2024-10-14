@@ -34,11 +34,18 @@
         
                             <p>Total Price: ₦<span class="sumTotal m-0 p-0" id="sumTotal-<%= data.id %>">100</span></p>
         
-                            <form class="paymentForm" id="paymentForm-<%= data.id %>">
-                                <input type="email" class="form-control" id="email-<%= data.id %>" required value="<%= user.email %>" hidden>
-                                <input type="number" class="form-control amountInput" id="amount-<%= data.id %>" value="100" hidden>
-                                <button type="submit" class="mt-2 btn btn-success voteButton" style="width: 100%;">Pay ₦<span class="paymentAmount" id="paymentAmount-<%= data.id %>">100</span></button>
-                            </form>
+                              <!-- Conditional button rendering -->
+                        <% if (data.status === "evicted") { %>
+                          <!-- If evicted, show 'Evicted' and disable the button -->
+                          <button type="button" class="mt-2 btn btn-danger voteButton" style="width: 100%;" disabled>Evicted</button>
+                      <% } else { %>
+                       
+                        <form class="paymentForm" id="paymentForm-<%= data.id %>">
+                          <input type="email" class="form-control" id="email-<%= data.id %>" required value="<%= user.email %>" hidden>
+                          <input type="number" class="form-control amountInput" id="amount-<%= data.id %>" value="100" hidden>
+                          <button type="submit" class="mt-2 btn btn-success voteButton" style="width: 100%;">Pay ₦<span class="paymentAmount" id="paymentAmount-<%= data.id %>">100</span></button>
+                        </form>
+                        <% } %>
                         </div>
                     </div>
                 </div>

@@ -15,14 +15,14 @@
             </div>  
         </div>
 
-        <div class="">
+        <!-- <div class="">
             <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i> <!-- Bootstrap Icons -->
+                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i> 
                 <div>
                   Eviction takes place tomorrow, Sunday, 13th of October 2024, and points below 200. We will be evicted from the contest.
                 </div>
               </div>
-        </div>
+        </div> -->
         <br>
 
               <div class="table-responsive">
@@ -30,7 +30,6 @@
                     <thead>
                         <tr>
                           <th>#</th>
-                          <th>image</th>
                           <th>Name</th>
                           <th>Total Vote</th>
                           <th>Total Points</th>
@@ -41,7 +40,6 @@
                         <% standings.forEach(function(data, index) { %>
                             <tr>
                                 <td><%= index + 1 %></td>
-                                <td><img class="img-thumbnail" style="max-width: 40px;" src="<%= data.photo_url %>" alt="image"></td>
                                 <td><%= data['fname'] %> <%= data['lname'] %></td>
                                <!-- Votes -->
                             <td class="<%= data['vote_count'] < 30 ? 'text-danger' : data['vote_count'] < 50 ? 'text-warning' : 'text-success' %>">
@@ -53,7 +51,7 @@
                                 <%= data['points'] %>
                             </td>
                                 <td class="<%= data['status'] === 'eviction' ? 'text-danger' : 'text-success' %>">
-                                    <%= data['status'] === 'eviction' ? 'Up for Eviction' : 'Active' %>
+                                    <%= data['status'] === 'eviction' ? 'Evicted' : 'Active' %>
                                 </td>
                             </tr> 
                         <% }) %>

@@ -22,6 +22,13 @@ router.get('/',ensureAuthenticated, async (req, res) => {
     // const matches = await getUsers(req);
     const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders"`);
 
+        // Calculate points for each contender and set status
+        contestantsQuery.forEach(contender => {
+          contender.points = contender.vote_count * 2; // 1 vote = 2 points
+          // Set status based on points
+          contender.status = contender.points < 200 ? 'evicted' : 'active';
+        });
+
     res.render('contestants', {
       contestants:contestantsQuery,
        theme: req.session.theme,

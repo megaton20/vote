@@ -63,8 +63,15 @@ router.get('/', async (req, res) => {
     userActive = true
   }
 
-  const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders" ORDER BY id ASC`);
   try {
+    const  {rows: contestantsQuery} = await query(`SELECT * FROM "contenders" ORDER BY id ASC`);
+
+          // Calculate points for each contender and set status
+          contestantsQuery.forEach(contender => {
+            contender.points = contender.vote_count * 2; // 1 vote = 2 points
+            // Set status based on points
+            contender.status = contender.points < 200 ? 'evicted' : 'active';
+          });
     
       res.render('index',{
         pageTitle:`Welcome to ${appName}`,

@@ -1,5 +1,6 @@
 
 
+
 <%- include ('./partials/nav') %>
 <!-- Hero Section Carousel -->
 <section id="hero-carousel" class="carousel slide vh-100" data-bs-ride="carousel">
@@ -82,12 +83,23 @@
     <h2 class="mb-5">Our Contestants</h2>
     <div class="row">
       <% contestants.forEach((data) => { %>
-      <div class="col-md-4 mb-4">
+      <div class="col-md-4 mb-4 border-1">
         <a href="/contestants">
           <img  src="<%= data.photo_url %>"  class="img-fluid rounded mb-2" alt="Contestant 1">
         </a>
-        <p class="m-0 primary-color"><%= data.fname %> <%= data.lname %> </p>
-        <h5><%= data.vote_count %> votes</h5>
+
+
+              <% if (data.status === "evicted") { %>
+                <p class="mt-2 btn btn-danger w-100">
+                  <i class="bi bi-exclamation-triangle-fill"></i> Evicted
+              </p>
+              
+            <% } else { %>  
+                <p class="m-0 primary-color"><%= data.fname %> <%= data.lname %> </p>
+                <h5><%= data.vote_count %> votes</h5>
+              <% } %>
+
+   
       </div>
       <% }) %>
     </div>
