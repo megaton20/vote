@@ -1,56 +1,16 @@
-  <!-- Transparent Navbar -->
-  <nav id="navbar" class="navbar navbar-expand-lg navbar-light fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="/">The Carnival Queen</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<!-- Transparent Navbar -->
+<nav id="navbar" class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">The Carnival Queen</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <!-- Navbar items visible on larger screens -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link primary-color active" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link primary-color" href="/abouts">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link primary-color" href="/contestants">Contestants</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link primary-color" href="/contestants/standings">Standing</a>
-          </li>
-          
-          <% if(userActive == false){ %>
-            <li class="nav-item">
-              <a class="nav-link primary-color" href="/register">Register</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link primary-color" href="/login">Login</a>
-            </li>
-            <% } else{ %> 
-              <li class="nav-item">
-                <a class="nav-link text-danger" href="/logout">Logout</a>
-              </li>
-            <% } %>
-          
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  
-  <!-- Offcanvas Navbar for smaller screens -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-    <div class="offcanvas-header">
-      <h5 id="offcanvasNavbarLabel" class="offcanvas-title">The Carnival Queen</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+    <!-- Navbar items visible on larger screens -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link primary-color active" aria-current="page" href="/">Home</a>
+          <a class="nav-link primary-color " aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link primary-color" href="/abouts">About</a>
@@ -61,6 +21,7 @@
         <li class="nav-item">
           <a class="nav-link primary-color" href="/contestants/standings">Standing</a>
         </li>
+        
         <% if(userActive == false){ %>
           <li class="nav-item">
             <a class="nav-link primary-color" href="/register">Register</a>
@@ -72,7 +33,74 @@
             <li class="nav-item">
               <a class="nav-link text-danger" href="/logout">Logout</a>
             </li>
-            <% } %>
+          <% } %>
       </ul>
     </div>
   </div>
+</nav>
+<!-- Offcanvas Navbar for smaller screens -->
+<div class="offcanvas offcanvas-start offcanvas-fullscreen bg-transparent" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close text-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3"> <!-- Center the items -->
+      <li class="nav-item">
+        <a class="nav-link primary-color " aria-current="page" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link primary-color" href="/abouts">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link primary-color" href="/contestants">Contestants</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link primary-color" href="/contestants/standings">Standing</a>
+      </li>
+      <% if(userActive == false){ %>
+        <li class="nav-item">
+          <a class="nav-link primary-color" href="/register">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link primary-color" href="/login">Login</a>
+        </li>
+      <% } else{ %> 
+        <li class="nav-item">
+          <a class="nav-link text-danger" href="/logout">Logout</a>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+</div>
+
+<style>
+.offcanvas-fullscreen {
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  top: 0; /* Align to top */
+  left: 0; /* Align to left */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+}
+
+.offcanvas-body {
+  background-color: transparent; 
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Arrange items in a column */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100%; /* Ensure it takes full height */
+}
+
+.nav-link {
+  color: green; /* Change text color to green */
+}
+
+.nav-link:hover {
+  color: #fff; /* Optional: Change text color on hover */
+}
+
+/* Ensure close button remains white */
+.btn-close {
+  color: white !important; 
+}
+</style>

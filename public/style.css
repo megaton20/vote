@@ -29,11 +29,13 @@ body {
 #navbar.scrolled  {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #292727 !important;
-  background: rgba(160, 155, 155, 0.8);
+  background: linear-gradient(rgba(101, 212, 17, 0.874), rgba(220, 176, 54, 0.5));
   transition: background-color 0.3s ease-in-out;
 }
 
-
+.navbar-brand{
+  color: #fff;
+}
 .hero {
 
   background: rgb(194,161,18);
@@ -125,7 +127,8 @@ section,
   right: 15px;
   bottom: 15px;
   z-index: 99999;
-  background-color: var(--accent-color);
+  background: rgb(194,161,18);
+  background: linear-gradient(90deg, rgba(194,161,18,1) 37%, rgba(11,194,74,1) 100%);
   width: 40px;
   height: 40px;
   border-radius: 4px;
