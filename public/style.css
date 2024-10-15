@@ -37,6 +37,26 @@ body {
 .navbar-brand{
   color: #fff;
 }
+
+.navbar-brand img {
+  max-width: 120px; /* Set a maximum width for the logo */
+  height: auto; /* Ensure the logo scales proportionally */
+  display: block; /* Ensures it behaves like a block element */
+}
+
+@media (max-width: 768px) {
+  .navbar-brand img {
+    max-width: 100px; /* Reduce the size slightly for mobile screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand img {
+    max-width: 80px; /* Even smaller size for very small screens */
+  }
+}
+
+
 .hero {
 
   background: rgb(194,161,18);
