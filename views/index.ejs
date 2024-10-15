@@ -19,15 +19,15 @@
         <div class="carousel-item active">
           <div class="row align-items-center">
             <!-- Text Section (col-8 on larger screens, col-12 on mobile) -->
-            <div class="col-lg-8 col-md-8 col-sm-12 text-start">
-              <h1 data-aos="fade-up" data-aos-delay="100">Welcome To The Carnival Queen Pageant</h1>
-              <p data-aos="fade-up" data-aos-delay="200">
-                where we celebrate  women's empowerment, cultural diversity  and community development.
+            <div class="col-lg-8 col-md-8 col-sm-12 text-start ">
+              <p data-aos="fade-up" data-aos-delay="400">
+                This pageant is a platform where women can showcase their talents, embrace their cultural heritage, and advocate for causes close to their hearts. It's a space  where each contestant steps forward as a role model and a leader in her community.
               </p>
+              <h2 data-aos="fade-up" data-aos-delay="300"> we celebrate more than just beauty, we honor the strength, intelligence, and leadership of women from all backgrounds.</h2>
             </div>
             <!-- Image Section (col-4 on larger screens, col-12 on mobile) -->
             <div class="col-lg-4 col-md-4 col-sm-12" data-aos="fade-up" data-aos-delay="300">
-             <div class="rounded-image">
+             <div class="rounded-container">
               <img src="/img/mm.JPG" class="img-fluid " alt="Hero Image">
              </div>
             </div>
@@ -39,14 +39,14 @@
           <div class="row align-items-center">
             <!-- Text Section (col-8 on larger screens, col-12 on mobile) -->
             <div class="col-lg-8 col-md-8 col-sm-12 text-start">
-              <h1>Welcome To The Carnival Queen Pageant</h1>
-              <p>
-                Discover new ways to enhance your business and reach your goals faster.
+              <p data-aos="fade-up" data-aos-delay="400">
+                Our contestants are not only ambassadors of beauty but also champions of resilience, passion, and positive impact. As they embody the essence of empowerment, they inspire future generations to break boundaries and reach new heights, creating lasting change in their communities and beyond.
               </p>
+              <h2 data-aos="fade-up" data-aos-delay="300">Through this event, we unite diverse voices to inspire change and uplift one another.</h2>
             </div>
             <!-- Image Section (col-4 on larger screens, col-12 on mobile) -->
             <div class="col-lg-4 col-md-4 col-sm-12">
-              <div class="rounded-image">
+              <div class="rounded-container">
                 <img src="/img/mm-2.JPG" class="img-fluid " alt="Second Hero Image">
 
               </div>
@@ -97,11 +97,23 @@
     filter: invert(1); /* Makes the icons visible on a colored background */
   }
 
-  .rounded-image{
-    border-radius: 50%;
-    height: 450px;
-    
-  }
+  .rounded-container {
+  border-radius: 50%;
+  width: 400px; /* Set a fixed width */
+  height: 400px; /* Set a fixed height */
+  overflow: hidden;
+  display: flex;
+  justify-content: center; /* Center image horizontally */
+  align-items: center; /* Center image vertically */
+  background-color: #271b1b; /* Optional: Add background color */
+}
+
+.rounded-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* Ensure image covers the container while maintaining aspect ratio */
+}
+
 </style>
 
 
