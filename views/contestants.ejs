@@ -127,21 +127,13 @@ document.querySelectorAll('.card.contender').forEach(card => {
       const finalAmount = parseFloat(card.querySelector(`#amount-${contestantId}`).value);  // Get updated total amount from hidden input
       const voteNumber = currentVotes;  // Get the current vote number
 
-      // Debugging output for confirmation
-      console.log('Submitting form with data:', {
-        email,
-        amount: Math.floor(finalAmount),
-        contestantId,
-        voteNumber
-      });
-
       // Make Paystack payment request
       fetch('/pay', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, amount: Math.floor(finalAmount), contestantId, voteNumber }),  // Send contestant ID, amount, and vote number
+        body: JSON.stringify({ email, amount: Math.floor(finalAmount), contestantId, voteNumber,type:"vote" }),  // Send contestant ID, amount, and vote number
       })
       .then(response => response.json())
       .then(data => {

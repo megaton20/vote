@@ -20,6 +20,7 @@ const openRoutes = require('./router/index');
 const authRouter = require('./router/auth');
 const userRouter = require('./router/userRouter');
 const contestantsRouter = require('./router/contestantsRouter');
+const ticketsRouter = require('./router/ticketsRouter');
 const superRouter = require('./router/superRouter');
 const {stopActions,mentainanceAction} = require('./middlewares/atWork');
 
@@ -82,6 +83,7 @@ app.use('/',stopActions, openRoutes);
 app.use('/auth',stopActions, authRouter);
 app.use('/user',stopActions, userRouter);
 app.use('/contestants',stopActions, contestantsRouter);
+app.use('/tickets',stopActions, ticketsRouter);
 app.use('/admin',stopActions, superRouter);
 
 

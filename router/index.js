@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const nodemailer = require('nodemailer');
 const { promisify } = require('util');
 const db = require("../model/databaseTable");
 const query = promisify(db.query).bind(db);
@@ -13,6 +14,16 @@ const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 const appName = `Carnival Queen Pageant` 
 
+      // Configure Nodemailer
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        secure: false,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD
+        }
+      });
 
 
 
@@ -140,11 +151,9 @@ router.get('/contact', async (req, res) => {
   if (req.user) {
     userActive = true
   }
-  const { rows: allCategory } = await query('SELECT * FROM "Category"');
   res.render('contact',{
     pageTitle:`contact`,
     userActive,
-    allCategory,
     theme:req.session.theme
   });
 }
@@ -193,7 +202,7 @@ router.get('/handler',ensureAuthenticated, (req, res)=>{
     const role = req.user.user_role
 
         if ((role == "super")) {
-         return res.redirect("/admin");
+         return res.redirect("/");
           // admins  ends here
         } else if(role == "user"){
          return res.redirect("/contestants");
@@ -279,12 +288,17 @@ router.get("/getlgas/:state", (req, res) => {
 
 // paystack
 router.post('/pay',ensureAuthenticated, async (req, res) => {
-  const { email, amount,contestantId, voteNumber} = req.body;
   
+  
+  
+  const {  type} = req.body;
+  if (type == "vote") {
+  const { email, amount,contestantId, voteNumber, type} = req.body;
+
   req.session.voteNumber = voteNumber;
   req.session.contestantId = contestantId;
 
-  try {
+    try {
       const response = await axios.post('https://api.paystack.co/transaction/initialize', {
           email,
           amount: amount * 100, // Paystack expects the amount in kobo
@@ -293,6 +307,7 @@ router.post('/pay',ensureAuthenticated, async (req, res) => {
             userId: req.user.id, // Include user ID from session
             contestantId: contestantId,
             voteNumber: voteNumber,
+            type:type
           }
       }, {
           headers: {
@@ -300,11 +315,43 @@ router.post('/pay',ensureAuthenticated, async (req, res) => {
           }
       });
 
-      res.json(response.data);
+     return res.json(response.data);
   } catch (error) {
     console.log(error);
       res.status(500).json({ message: error.message });
   }
+  }else if(type == "ticket"){
+    try {
+
+      const { email, amount,ticketID, type,ticketType} = req.body;
+      req.session.ticketID = ticketID;
+      req.session.ticketType = ticketType;
+      const response = await axios.post('https://api.paystack.co/transaction/initialize', {
+          email,
+          amount: amount * 100, // Paystack expects the amount in kobo
+           callback_url: `${process.env.LIVE_DIRR || process.env.NGROK_URL || `http://localhost:${process.env.PORT}`}/verify`,
+           metadata: {
+            userId: req.user.id, 
+            ticketID: ticketID,
+            type:type,
+            ticketType:ticketType
+          }
+      }, {
+          headers: {
+              Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+          }
+      });
+
+      return res.json(response.data);
+  } catch (error) {
+    console.log(error);
+      res.status(500).json({ message: error.message });
+  }
+  }else{
+    console.log("payment type not specified");
+    res.status(500).json({ message: error.message });
+  }
+
 });
 
 
@@ -331,26 +378,43 @@ router.get('/verify', async (req, res) => {
 
     if (response.data.status && response.data.data.status === 'success') {
       
-      const contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
-      const { rows: result } = await db.query(contenderQuery, [req.session.contestantId]); 
 
-          if (result.length > 0) {
-                req.flash('success_msg', `Payment successful! ${req.session.voteNumber} vote(s) casted for ${result[0].fname} ${result[0].lname} `);
-                return res.redirect('/contestants');
+    const type  = response.data.data.metadata.type
+
+    if (type == "vote") {
+        const contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
+        const { rows: result } = await db.query(contenderQuery, [req.session.contestantId]); 
+
+      if (result.length > 0) {
+            req.flash('success_msg', `Payment successful! ${req.session.voteNumber} vote(s) casted for ${result[0].fname} ${result[0].lname} `);
+            return res.redirect('/contestants');
+      }
+
+          req.flash('success_msg', `Payment successful! ${req.session.voteNumber} vote(s) casted.`);
+          return res.redirect('/contestants');
+      }else{
+
+        const ticketQuery = `SELECT * FROM "tickets" WHERE "id" = $1`;
+        const { rows: result } = await db.query(ticketQuery, [req.session.ticketID]); 
+
+      if (result.length > 0) {
+            req.flash('success_msg', `Payment successful for ${result[0].name} ticket, check email for ticket code (check spam folder)`);
+            return res.redirect('/tickets');
+      }
+            req.flash('success_msg', `Ticket payment Payment successful!`);
+            return res.redirect('/tickets');
           }
-
-        req.flash('success_msg', `Payment successful! ${req.session.voteNumber} vote(s) casted.`);
-        return res.redirect('/contestants');
+    
 
     } else {
       // Handle failed verification from Paystack
       req.flash('error_msg', 'Payment verification failed.');
-      return res.redirect('/contestants');
+      return res.redirect('/');
     }
   } catch (error) {
     console.error('Error verifying payment:', error);
     req.flash('error_msg', 'Server error');
-    return res.redirect('/contestants');
+    return res.redirect('/');
   }
 });
 
@@ -379,73 +443,163 @@ router.post('/webhook', async (req, res) => {
           paid_at, 
           metadata 
         } = event.data;
-        // Get voteNumber, contestantId, and userId from metadata
-        const { voteNumber, contestantId, userId } = metadata;
 
-        // Check if transaction already exists in the database to prevent duplication
-        const existingTransactionQuery = `SELECT * FROM "transactions" WHERE "reference" = $1`;
-        const { rows: existingTransaction } = await db.query(existingTransactionQuery, [reference]);
+        const { type } = metadata;
+        
+        if (type == "vote") {
+          const { voteNumber, contestantId, userId } = metadata;
+       // Check if transaction already exists in the database to prevent duplication
+       const existingTransactionQuery = `SELECT * FROM "transactions" WHERE "reference" = $1`;
+       const { rows: existingTransaction } = await db.query(existingTransactionQuery, [reference]);
+
+       if (existingTransaction.length === 0) {
+         // Save transaction details to the database
+         const transactionQuery = `INSERT INTO "transactions" 
+           ("reference", "amount", "status", "email", "paid_at", "user_id", "contendant_id", "votes_casted") 
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+         
+         await db.query(transactionQuery, [
+           reference, 
+           amount / 100,  // Convert kobo back to naira
+           status, 
+           email, 
+           paid_at, 
+           userId, 
+           contestantId, 
+           voteNumber
+         ]);
+
+         // Fetch current vote count of the contestant
+         const contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
+         const { rows: contenderResults } = await db.query(contenderQuery, [contestantId]);
+
+         if (contenderResults.length > 0) {
+           const currentVoteCount = contenderResults[0].vote_count;
+
+           // Calculate new vote total
+           const newVote = parseInt(currentVoteCount, 10) + parseInt(voteNumber, 10);
+           
+           // Update vote count in "contenders" table
+           const voteCountQuery = `UPDATE "contenders" SET "vote_count" = $1 WHERE "id" = $2`;
+           await db.query(voteCountQuery, [newVote, contestantId]);
+
+
+           //
+           const getNewTransaction = `SELECT * FROM "transactions" WHERE "reference" = $1`;
+           const { rows: transactionResult } = await db.query(getNewTransaction, [reference]);
+
+           if (transactionResult.length > 0) {
+
+             const updateTransaction = `UPDATE "transactions" SET "old_vote" = $1, "new_vote" = $2 WHERE "id" = $3`;
+             await db.query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
+           return  console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
+           }
+           
+           const updateTransaction = `UPDATE "transactions" SET "old_vote" = $1, "new_vote" = $2 WHERE "id" = $3`;
+           await db.query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
+           console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
+           console.log('transaction was updated outside');
+
+           return 
+           // 
+         } else {
+           console.log(`No contestant found with ID: ${contestantId}`);
+         }
+
+         // Send 200 OK after processing successfully
+         return res.sendStatus(200);
+        }else {
+          console.log('Transaction already exists, no need to insert.');
+           return res.sendStatus(200); // Acknowledge the webhook
+        }
+   
+        }else{
+
+
+          const { ticketID, userId,ticketType } = metadata;
+          // Check if transaction already exists in the database to prevent duplication
+          const existingTransactionQuery = `SELECT * FROM "ticket_transactions" WHERE "reference" = $1`;
+          const { rows: existingTransaction } = await db.query(existingTransactionQuery, [reference]);
 
         if (existingTransaction.length === 0) {
           // Save transaction details to the database
-          const transactionQuery = `INSERT INTO "transactions" 
-            ("reference", "amount", "status", "email", "paid_at", "user_id", "contendant_id", "votes_casted") 
+          const generateTicketCode = () => {
+            const uniqueCode = Math.random().toString(36).substr(2, 8).toUpperCase(); // Generate a random 8-character alphanumeric string
+            return `STS-${uniqueCode}`;
+          };
+
+          const ticketCode = generateTicketCode();
+            // Save transaction details, including the ticket code, to the database
+            const transactionQuery = `INSERT INTO "ticket_transactions" 
+            ("reference", "amount", "status", "email", "paid_at", "user_id", "ticket_id", "ticket_code") 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
-          
-          await db.query(transactionQuery, [
-            reference, 
-            amount / 100,  // Convert kobo back to naira
-            status, 
-            email, 
-            paid_at, 
-            userId, 
-            contestantId, 
-            voteNumber
-          ]);
 
-          // Fetch current vote count of the contestant
-          const contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
-          const { rows: contenderResults } = await db.query(contenderQuery, [contestantId]);
+            await db.query(transactionQuery, [
+              reference, 
+              amount / 100,  // Convert kobo back to naira
+              status, 
+              email, 
+              paid_at, 
+              userId, 
+              ticketID,
+              ticketCode
+            ]);
 
-          if (contenderResults.length > 0) {
-            const currentVoteCount = contenderResults[0].vote_count;
+                 // Insert into 'paid_tickets' table with generated ticket code
+              const ticketInsertQuery = `INSERT INTO "paid_tickets" ("ticket_code", "ticket_type", "user_id", "ticket_id") VALUES ($1, $2, $3, $4)`;
 
-            // Calculate new vote total
-            const newVote = parseInt(currentVoteCount, 10) + parseInt(voteNumber, 10);
-            
-            // Update vote count in "contenders" table
-            const voteCountQuery = `UPDATE "contenders" SET "vote_count" = $1 WHERE "id" = $2`;
-            await db.query(voteCountQuery, [newVote, contestantId]);
+            await db.query(ticketInsertQuery, [
+              ticketCode,
+              ticketType,
+              userId,
+              ticketID
+            ]);
+          // Send email with ticket details
+          const sendEmail = (to, subject, message) => {
+            // Email options
+            const mailOptions = {
+              from: 'your-email@gmail.com',
+              to,
+              subject,
+              html: message  // Use the HTML property instead of text
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                console.log('Error sending email:', error);
+              } else {
+                console.log('Email sent successfully:', info.response);
+              }
+            });
+          };
+
+          // Email content
+          const emailSubject = 'Your Ticket Purchase Confirmation';
+          const emailMessage = `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+              <h2>Dear Customer,</h2>
+              <p>Thank you for your purchase! Here are your ticket details:</p>
+              <ul>
+                <li><strong>Ticket Code:</strong> ${ticketCode}</li>
+                <li><strong>Ticket Amount:</strong> ₦${(amount / 100).toFixed(2)}</li>
+                <li><strong>Date:</strong> ${paid_at}</li>
+              </ul>
+              <p>Please keep this ticket code safe, as it will be required for event entry.</p>
+              <p>Best regards,<br>The Carnival Queen</p>
+            </div>
+          `;
+
+          // Send the email
+          sendEmail(email, emailSubject, emailMessage);
 
 
-            //
-            const getNewTransaction = `SELECT * FROM "transactions" WHERE "reference" = $1`;
-            const { rows: transactionResult } = await db.query(getNewTransaction, [reference]);
-
-            if (transactionResult.length > 0) {
-
-              const updateTransaction = `UPDATE "transactions" SET "old_vote" = $1, "new_vote" = $2 WHERE "id" = $3`;
-              await db.query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
-            return  console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
-            }
-            
-            const updateTransaction = `UPDATE "transactions" SET "old_vote" = $1, "new_vote" = $2 WHERE "id" = $3`;
-            await db.query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
-            console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
-            console.log('transaction was updated outside');
-
-            return 
-            // 
-          } else {
-            console.log(`No contestant found with ID: ${contestantId}`);
-          }
-
-          // Send 200 OK after processing successfully
-          return res.sendStatus(200);
-        } else {
+   // Send 200 OK after processing successfully
+   return res.sendStatus(200);
+  }else {
           console.log('Transaction already exists, no need to insert.');
           return res.sendStatus(200); // Acknowledge the webhook
         }
+        }  // ticket logic ends
       } else {
         console.log(`Unhandled event type: ${event.event}`);
         return res.sendStatus(200); // Acknowledge unhandled events

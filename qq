@@ -26,6 +26,27 @@ CREATE TABLE transactions (
      new_vote INT NULL,
 );
 
+CREATE TABLE "ticket_transactions" (
+    id SERIAL PRIMARY KEY,   -- Auto-incrementing ID for the transaction
+    reference VARCHAR(255) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,      
+    status VARCHAR(50) NOT NULL,    
+    email VARCHAR(255) NOT NULL,   
+    paid_at TIMESTAMP NOT NULL,
+    user_id INT NOT NULL,
+    ticket_id INT NOT NULL,
+    ticket_code VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE paid_tickets (
+    id SERIAL PRIMARY KEY,                -- Auto-incrementing unique identifier for each record
+    ticket_code VARCHAR(50) NOT NULL,     -- Unique ticket code, e.g., "STS-XXXXXXXX"
+    ticket_type VARCHAR(50) NOT NULL,     -- Type of ticket (e.g., VIP, General, etc.)
+    user_id INTEGER NOT NULL,             -- ID of the user who purchased the ticket (FK to users table)
+    ticket_id INTEGER NOT NULL          -- ID of the ticket purchased (FK to tickets table)
+);
+
+
 
 CREATE TABLE "contenders" (
   "id" SERIAL PRIMARY KEY,
@@ -35,3 +56,18 @@ CREATE TABLE "contenders" (
   "vote_count" INT DEFAULT 0,
   "photo_url"VARCHAR(255) NOT NULL,
 );
+
+
+CREATE TABLE "tickets" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
+  "amount" DECIMAL(10, 2) NOT NULL, 
+  "photo_url"VARCHAR(255) NOT NULL
+);
+
+INSERT INTO tickets (name, amount, photo_url) VALUES
+('Flat', 1000, '/tickets/1k.pg'),
+('Candy', 2000, '/tickets/2k.pg'),
+('Unusual', 5000, '/tickets/5k.pg'),
+('Tierrah', 50000, '/tickets/50k.ipg'),
+('Elixir', 80000, '/tickets/80k.ipg');

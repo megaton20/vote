@@ -117,56 +117,60 @@
 </style>
 
 
-<br>
-<br>
 
-<main class="container">
   <!-- About Section -->
-      <!-- Section Title -->
-      <div class="container section-title mt-2" data-aos="fade-up" data-aos-delay="100">
-        <h2>About us</h2>
-        <p>Get To know us </p>
-      </div><!-- End Section Title -->
+ 
 
+    <section id="about" class="py-5 bg-light" >
 
-<section id="about" class="py-5 bg-light" >
+           <!-- Section Title -->
+           <div class="container section-title mt-2" data-aos="fade-up" data-aos-delay="100">
+            <h2>About us</h2>
 
-  
+          </div><!-- End Section Title -->
+    
 
-  <div class="container" >
-    <div class="row align-items-center" data-aos="fade-up" data-aos-delay="100">
-      <div class="col-md-6">
-        <img src="/img/qq.jpg" class="img-fluid rounded shadow" alt="About Image" data-aos="slide-left" data-aos-delay="100">
+      <div class="container" >
+        <div class="row align-items-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-md-6">
+            <img src="/img/qq.jpg" class="img-fluid rounded shadow" alt="About Image" data-aos="slide-left" data-aos-delay="100">
+          </div>
+          <div class="col-md-6 mt-2">
+            <h2 class="text-heading">Our Mission</h2>
+            <p class="lead"> We are committed to providing a free and fair platform where contestants can showcase their talents, intelligence, and character while honoring their cultural heritage and promoting women's capacity development. Our pageant welcomes women from diverse backgrounds and abilities, making us a reflection of the world's beauty in diversity.</p>
+          </div>
+        </div>
+
+        <div class="row align-items-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="col-md-6 order-md-2">
+            <img src="/img/mm-2.JPG" class="img-fluid rounded shadow" alt="Vision Image">
+          </div>
+          <div class="col-md-6 order-md-1 mt-2">
+            <h2 class="text-heading">Our Vision</h2>
+            <p class="lead">The Carnival Queen Pageant aims to be a leading platform for women's empowerment, cultural exchange, and community development. We strive to create an extraordinary experience that inspires and uplifts everyone involved, breaking conventions and transforming the ordinary into extraordinary through the concept of “Unusualization”.</p>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 mt-2">
-        <h2 class="text-heading">Our Mission</h2>
-        <p class="lead"> We are committed to providing a free and fair platform where contestants can showcase their talents, intelligence, and character while honoring their cultural heritage and promoting women's capacity development. Our pageant welcomes women from diverse backgrounds and abilities, making us a reflection of the world's beauty in diversity.</p>
-      </div>
-    </div>
-
-    <div class="row align-items-center" data-aos="fade-up" data-aos-delay="200">
-      <div class="col-md-6 order-md-2">
-        <img src="/img/mm-2.JPG" class="img-fluid rounded shadow" alt="Vision Image">
-      </div>
-      <div class="col-md-6 order-md-1 mt-2">
-        <h2 class="text-heading">Our Vision</h2>
-        <p class="lead">The Carnival Queen Pageant aims to be a leading platform for women's empowerment, cultural exchange, and community development. We strive to create an extraordinary experience that inspires and uplifts everyone involved, breaking conventions and transforming the ordinary into extraordinary through the concept of “Unusualization”.</p>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
 <!-- Vision Section -->
-<section id="vision" class="py-5 bg-light" >
-  <div class="container">
- 
+<!-- <section class="vision" class="py-5 bg-light" >
+  <div class="">
+
   </div>
-</section>
+</section> -->
 
 <!-- Contestants Section -->
 <section id="contestants" class="py-5">
+
+      <!-- Section Title -->
+      <div class="container section-title mt-2" data-aos="fade-up" data-aos-delay="100">
+        <h2>contestants</h2>
+
+      </div><!-- End Section Title -->
+
+
   <div class="container text-center" data-aos="fade-up" data-aos-delay="100">
-    <h2 class="mb-5">Our Contestants</h2>
     <div class="row">
       <% contestants.forEach((data) => { %>
       <div class="col-md-4 mb-4 border-1">
@@ -196,6 +200,7 @@
     </div>
   </div>
 </section>
-</main>
 
+ 
+<%- include('./partials/contact') %>
 <%- include('./partials/footer') %>

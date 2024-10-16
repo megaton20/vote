@@ -1,0 +1,101 @@
+<%- include('./partials/nav') %>
+
+
+          <div class="page-header">
+              <div class=" text-center ">
+                  <h4 class="display-4">Tickets </h4>
+              </div>
+        </div>
+
+<div class="container">
+  <%- include('./partials/messages') %>
+  <p class="text-center text-danger mb-4"> <i class="bi bi-bell-fill"></i> <br> use a verified email so you can recieve your ticket confirmation code! <br> this code will be needed at the gate</p> 
+
+  <hr>
+  <div class="row">
+    <% tickets.forEach((data) => { %>
+      <div class="col-md-4 mb-4">
+        <div class="card contender "data-name="<%= data.name %>" data-id="<%= data.id %>" data-aos="fade-up" data-aos-delay="100">
+          <img src="<%= data.photo_url %>" class="card-img-top" alt="<%= data.fname %> <%= data.lname %>">
+  
+          <div class="card-body">
+            <h2 class="text-uppercase" ><%= data.name %></h2>
+            <p class="card-text">Price: <%= data.amount %></p>
+            <p class="card-text">Available: 120 left</p>
+            <p class="card-text">Quantity: 1</p>
+  
+            <form class="paymentForm" id="paymentForm-<%= data.id %>">
+              <input type="email" class="form-control" id="email-<%= data.id %>" value="<%= user.email %>" hidden>
+              <input type="number" class="form-control amountInput" id="amount-<%= data.id %>" value="<%= data.amount %>" hidden>
+              <button type="submit" class="mt-2 btn btn-success voteButton" style="width: 100%;">
+                Buy
+              </button>
+            </form>
+  
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+      
+</div>
+
+<%- include('./partials/footer') %>
+
+
+<script>
+  
+  document.querySelectorAll('.card.contender').forEach(card => {
+  const paymentForm = card.querySelector('.paymentForm');
+  const ticketID = card.getAttribute('data-id'); 
+  const ticketType = card.getAttribute('data-name'); 
+
+  if (paymentForm) {
+    paymentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = card.querySelector(`#email-${ticketID}`).value;
+      const amount = parseFloat(card.querySelector(`#amount-${ticketID}`).value);  // Get ticket amount
+
+      // Log for debugging
+      console.log('Submitting form with data:', {
+        email,
+        amount,
+        ticketID,
+        ticketType
+      });
+
+      // Make Paystack payment request
+      fetch('/pay', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          amount: Math.floor(amount),  // Convert amount to a whole number
+          ticketID: ticketID,
+          type: "ticket",
+          ticketType:ticketType
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status) {
+          // Redirect to Paystack authorization URL
+          window.location.href = data.data.authorization_url;
+        } else {
+          alert('Payment failed. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      });
+    });
+  } else {
+    console.error(`Payment form not found for ticket ${ticketID}`);
+  }
+});
+
+  </script>
