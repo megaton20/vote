@@ -116,6 +116,63 @@
 
 </style>
 
+<!-- event Section -->
+
+<section class="event" id="event" class="py-5 bg-light shadow" >
+  <div class="container section-title mt-2" data-aos="fade-up" data-aos-delay="100">
+    <h2>Events</h2>
+
+  </div>
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-8">
+        <div class="event-details p-3 mb-3">
+          <div class="owl-carousel owl-theme">
+
+            <div class="item ">
+              <h2>Preliminary </h2>
+              <h4>Award talent show</h4>
+              <p><span><i class="bi bi-mic"></i>  Theme</span> Colors and Glitters </p>
+              <p><span><i class="bi bi-pin"></i>  Location</span> Chelsea holiday home </p>
+              <p><span><i class="bi bi-bank"></i>  Landmark</span> MM/h spc junction, besides dozzy filling station </p>
+              <p><span><i class="bi bi-clock"></i>  Time</span> 4Pm</p>
+            </div>
+
+            <div class="item ">
+              <h2>Grand </h2>
+              <h4>Finale</h4>
+              <p><span><i class="bi bi-mic"></i> Theme</span> Black and White ball </p>
+              <p><span><i class="bi bi-pin"></i> Location</span> St. patrick's int'l event center </p>
+              <p><span><i class="bi bi-bank"></i> Landmark</span> St. patrick's parish ikot ansa calabar </p>
+              <p><span><i class="bi bi-clock"></i> Black & White Carpet</span> 4PM</p>
+              <p><span><i class="bi bi-clock"></i> Main Event</span> 6PM</p>
+            </div>
+            </div>
+        </div>
+      </div>
+ 
+
+
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+      <div class="counter p-3 ">
+        <h2>Days to event</h2>
+      <div class="item">
+        <h2>Preliminary</h2>
+        <div id="countdown1" class="countdown" data-aos="fade-up" data-aos-delay="500"></div>
+    </div>
+    <!-- Countdown 2 -->
+    <div class="item" data-aos="fade-up" data-aos-delay="400">
+        <h2>Grand Finale</h2>
+        <div id="countdown2" class="countdown" data-aos="fade-up" data-aos-delay="400"></div>
+    </div>
+      </div>
+  </div>
+
+  </div>
+</div>
+</section>
+
 
 
   <!-- About Section -->
@@ -125,40 +182,46 @@
 
            <!-- Section Title -->
            <div class="container section-title mt-2" data-aos="fade-up" data-aos-delay="100">
-            <h2>About us</h2>
+            <h2>Theme</h2>
 
-          </div><!-- End Section Title -->
+          </div>
+          <!-- End Section Title -->
     
 
       <div class="container" >
         <div class="row align-items-center" data-aos="fade-up" data-aos-delay="100">
-          <div class="col-md-6">
-            <img src="/img/qq.jpg" class="img-fluid rounded shadow" alt="About Image" data-aos="slide-left" data-aos-delay="100">
+          <div class="col-md-5 col-sm-12  mb-4">
+              <div class="image-containnn">
+                <img src="/img/z.jpg" class="img-fluid rounded shadow" alt="About Image" data-aos="slide-left" data-aos-delay="100">
+              </div>
           </div>
-          <div class="col-md-6 mt-2">
-            <h2 class="text-heading">Our Mission</h2>
-            <p class="lead"> We are committed to providing a free and fair platform where contestants can showcase their talents, intelligence, and character while honoring their cultural heritage and promoting women's capacity development. Our pageant welcomes women from diverse backgrounds and abilities, making us a reflection of the world's beauty in diversity.</p>
+          <div class="col-md-7 mt-2">
+            <div class="container">
+              <h4 class="primary-color">ELIXIR</h4>
+              <p>The Carnival Queen Pageant proudly presents its maiden edition theme: "ELIXIR: Rejuvenating the Power of Culture and Tourism." This theme embodies the essence of our mission to celebrate cultural diversity, promote tourism, and empower women.</p>
+            <p>Is a magical or medicinal potion believed to have healing or transformative properties.
+                A refreshing or rejuvenating substance for revitalizing or restorative. It is often seen as a remedy and solution 
+            </p>
+                
+                <p>In our context:
+                <b>"ELIXIR"</b> serves as a powerful theme for The Carnival Queen Pageant main edition focus , symbolizing:
+            </p>
+                <ul>
+                    <li>Cultural rejuvenation</li>
+                    <li>Tourism revitalization</li>
+                    <li>Women's empowerment</li>
+                </ul>
+
+                
+            </div>
           </div>
         </div>
 
-        <div class="row align-items-center" data-aos="fade-up" data-aos-delay="200">
-          <div class="col-md-6 order-md-2">
-            <img src="/img/mm-2.JPG" class="img-fluid rounded shadow" alt="Vision Image">
-          </div>
-          <div class="col-md-6 order-md-1 mt-2">
-            <h2 class="text-heading">Our Vision</h2>
-            <p class="lead">The Carnival Queen Pageant aims to be a leading platform for women's empowerment, cultural exchange, and community development. We strive to create an extraordinary experience that inspires and uplifts everyone involved, breaking conventions and transforming the ordinary into extraordinary through the concept of “Unusualization”.</p>
-          </div>
-        </div>
+ 
       </div>
     </section>
 
-<!-- Vision Section -->
-<!-- <section class="vision" class="py-5 bg-light" >
-  <div class="">
 
-  </div>
-</section> -->
 
 <!-- Contestants Section -->
 <section id="contestants" class="py-5">
@@ -204,3 +267,48 @@
  
 <%- include('./partials/contact') %>
 <%- include('./partials/footer') %>
+
+
+
+
+<script>
+// Countdown 1: 20th November
+const countDownDate1 = new Date("November 20, 2024 00:00:00").getTime();
+const countdownFunction1 = setInterval(function() {
+  const now = new Date().getTime();
+  const distance1 = countDownDate1 - now;
+
+  const days1 = Math.floor(distance1 / (1000 * 60 * 60 * 24));
+  const hours1 = Math.floor((distance1 % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes1 = Math.floor((distance1 % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds1 = Math.floor((distance1 % (1000 * 60)) / 1000);
+
+  document.getElementById("countdown1").innerHTML = 
+      days1 + "d " + hours1 + "h " + minutes1 + "m " + seconds1 + "s ";
+
+  if (distance1 < 0) {
+      clearInterval(countdownFunction1);
+      document.getElementById("countdown1").innerHTML = "EXPIRED";
+  }
+}, 1000);
+
+// Countdown 2: 22nd November - Grand Finale
+const countDownDate2 = new Date("November 22, 2024 00:00:00").getTime();
+const countdownFunction2 = setInterval(function() {
+  const now = new Date().getTime();
+  const distance2 = countDownDate2 - now;
+
+  const days2 = Math.floor(distance2 / (1000 * 60 * 60 * 24));
+  const hours2 = Math.floor((distance2 % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes2 = Math.floor((distance2 % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+
+  document.getElementById("countdown2").innerHTML = 
+      days2 + "d " + hours2 + "h " + minutes2 + "m " + seconds2 + "s ";
+
+  if (distance2 < 0) {
+      clearInterval(countdownFunction2);
+      document.getElementById("countdown2").innerHTML = "The Grand Finale is here!";
+  }
+}, 1000);
+</script>

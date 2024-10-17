@@ -10,30 +10,30 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link primary-color " aria-current="page" href="/">Home</a>
+          <a class="nav-link  " aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link primary-color" href="/abouts">About us</a>
+          <a class="nav-link " href="/abouts">About us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link primary-color" href="/contestants/standings">Standing</a>
+          <a class="nav-link " href="/contestants/standings">Standing</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link primary-color" href="/tickets">Buy Tickets</a>
+          <a class="nav-link " href="/tickets">Buy Tickets</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link primary-color" href="/contestants">Contestants</a>
+          <a class="nav-link " href="/contestants">Contestants</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link primary-color" href="/contact">Contact us</a>
+          <a class="nav-link " href="/contact">Contact us</a>
         </li>
         
         <% if(userActive == false){ %>
           <li class="nav-item">
-            <a class="nav-link primary-color" href="/register">Register</a>
+            <!-- <a class="nav-link " href="/register">Register</a> -->
           </li>
           <li class="nav-item">
-            <a class="nav-link primary-color" href="/login">Login</a>
+            <a class="nav-link " href="/login">Login</a>
           </li>
           <% } else{ %> 
             <li class="nav-item">
@@ -52,29 +52,29 @@
   <div class="offcanvas-body">
     <ul class="navbar-nav justify-content-center flex-grow-1 pe-3"> <!-- Center the items -->
       <li class="nav-item">
-        <a class="nav-link primary-color " aria-current="page" href="/">Home</a>
+        <a class="nav-link  " aria-current="page" href="/">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link primary-color" href="/contestants/standings">Standing</a>
+        <a class="nav-link " href="/contestants/standings">Standings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link primary-color" href="/abouts">About us</a>
+        <a class="nav-link " href="/abouts">About us</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link primary-color" href="/tickets">Buy Tickets</a>
+        <a class="nav-link " href="/tickets">Buy Tickets</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link primary-color" href="/contestants">Contestants</a>
+        <a class="nav-link " href="/contestants">Contestants</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link primary-color" href="/contact">Contact us</a>
+        <a class="nav-link " href="/contact">Contact us</a>
       </li>
       <% if(userActive == false){ %>
         <li class="nav-item">
-          <a class="nav-link primary-color" href="/register">Register</a>
+          <!-- <a class="nav-link " href="/register">Register</a> -->
         </li>
         <li class="nav-item">
-          <a class="nav-link primary-color" href="/login">Login</a>
+          <a class="nav-link " href="/login">Login</a>
         </li>
       <% } else{ %> 
         <li class="nav-item">
@@ -104,7 +104,7 @@
 }
 
 .nav-link {
-  color: green; /* Change text color to green */
+  color: #fff; /* Optional: Change text color on hover */
 }
 
 .nav-link:hover {

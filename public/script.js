@@ -52,3 +52,28 @@ window.addEventListener('scroll', function() {
     });
   }
   window.addEventListener('load', aosInit);
+
+
+
+
+  // Function to initialize the Owl Carousel
+  function initializeCarousel() {
+      const owl = document.querySelector('.owl-carousel');
+
+      // Initialize the carousel with custom options
+      $(owl).owlCarousel({
+          items: 1,
+          loop: true,
+          autoplay: true,
+          autoplayTimeout: 5000, // Auto-scroll after 4 seconds
+          autoplayHoverPause: true, // Pause on hover
+          dots: true, // Enable dots for navigation
+          nav: false // Disable default navigation buttons
+      });
+  }
+
+
+  // Initialize everything on window load
+  window.addEventListener('load', function() {
+      initializeCarousel();
+  });

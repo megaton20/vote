@@ -23,6 +23,66 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+
+.event{
+  padding-top: 100px;
+  padding-bottom: 100px;
+
+}
+
+.event-details {
+  border-left: 1px solid var(--accent-color);
+}
+.event-details h2{
+  color: var(--accent-color);
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+
+.event-details h4{
+  color: var(--default-color);
+  font-style: normal;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.event-details p span{
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+.event-details p {
+  text-transform: uppercase;
+}
+.counter{
+  background-image: url('./img/decor_inside.png');
+  background-size: cover;
+}
+.counter h2{
+  color: var(--accent-color);
+  text-transform: uppercase;
+  font-size: 15px;
+}
+.counter .item{
+  padding: 15px;
+  border-left: 1px solid var(--accent-color);
+  margin-top:20px ;
+}
+.event-details{
+  background-image: url('./img/decor_inside.png');
+  background-size: cover;
+
+}
+.countdown-container {
+  display: flex;
+  gap: 50px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
 /* Semi-transparent white */
 #navbar .nav-link  {
   color: #fff !important;
@@ -30,13 +90,12 @@ body {
 #navbar.scrolled  {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #292727 !important;
-  background: linear-gradient(rgba(101, 212, 17, 0.874), rgba(220, 176, 54, 0.5));
+  background: rgb(34, 139, 34); 
+  background: linear-gradient(90deg, rgba(34, 139, 34, 1) 0%, rgb(226, 195, 16) 100%);
   transition: background-color 0.3s ease-in-out;
 }
 
-.navbar-brand{
-  color: #fff;
-}
+
 
 .navbar-brand img {
   max-width: 120px; /* Set a maximum width for the logo */
@@ -59,8 +118,8 @@ body {
 
 .hero {
 
-  background: rgb(194,161,18);
-background: linear-gradient(90deg, rgba(194,161,18,1) 37%, rgba(11,194,74,1) 100%);
+  background: rgb(34, 139, 34); 
+  background: linear-gradient(90deg, rgba(34, 139, 34, 1) 0%, rgb(226, 195, 16) 100%);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -85,7 +144,7 @@ background: linear-gradient(90deg, rgba(194,161,18,1) 37%, rgba(11,194,74,1) 100
 
 @media (max-width: 768px) {
   .carousel-inner {
-    margin-top: 50px; /* Adjust this value to suit your needs */
+    margin-top: 50px; 
   }
 }
 
@@ -156,16 +215,6 @@ section,
 }
 
 
-
-/* vision */
-
-.vision{
-  background-image: url('/img/green.jpeg');
-  background-attachment:fixed ;
-  background-size:cover;
-  background-repeat: no-repeat;
-  height: 300px;
-}
 
 
 /*--------------------------------------------------------------
@@ -409,8 +458,8 @@ section,
   right: 15px;
   bottom: 15px;
   z-index: 99999;
-  background: rgb(194,161,18);
-  background: linear-gradient(90deg, rgba(194,161,18,1) 37%, rgba(11,194,74,1) 100%);
+  background: rgb(34, 139, 34); 
+  background: linear-gradient(90deg, rgba(34, 139, 34, 1) 0%, rgb(226, 195, 16) 100%);
   width: 40px;
   height: 40px;
   border-radius: 4px;
@@ -434,22 +483,39 @@ section,
 }
 
 
+.page-bg{
 
+  background-image: url('./img/about-bg.png');
+}
 
 .page-header{
   height: 60vh;
   padding: 10px;
-  background: rgb(34, 139, 34); /* Fallback for older browsers */
+  background: rgb(34, 139, 34); 
   background: linear-gradient(90deg, rgba(34, 139, 34, 1) 0%, rgb(226, 195, 16) 100%);
-  border-radius:5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius:5px;
   color: #fff;
   text-transform: uppercase;
   font-size: 20px;
 
 } 
+
+.page-header p{
+  font-size: 14px;
+
+}
+.page-header p a{
+  color: var(--background-color) !important;
+  text-decoration: none;
+  transition: .2s ease-in-out;
+}
+.page-header p a:hover{
+  color: var(--accent-color) !important;
+  text-decoration: none;
+}
 .my-btn {
   background: rgb(34, 139, 34); /* Fallback for older browsers */
   background: linear-gradient(90deg, rgba(34, 139, 34, 1) 0%, rgb(226, 195, 16) 100%);
@@ -467,17 +533,31 @@ section,
   margin-bottom: 30px;
 }
 .values-section .text{
-  border: 1px solid #0e8d09;
-  height: 170px;
   padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 .values-section h4{
   color: #0e8d09;
 }
 
+.image-containnn{
+  background-image: url('./img/about-bg.png');
+  padding-left: 50px;
+  padding-top: 20px;
+}
 
+
+@media (max-width: 768px) {
+  .carousel-inner {
+    margin-top: 50px; 
+  }
+  .image-containnn{
+    background-image: url('./img/about-bg.png');
+    padding-left: 0px;
+    padding-top: 0px;
+  }
+}
 
 .mission-section {
   margin-top: 30px;
@@ -487,6 +567,8 @@ section,
   margin-top: 30px;
   margin-bottom: 30px;
 }
+
+
 .other-abouts {
   margin-top: 30px;
   margin-bottom: 30px;
