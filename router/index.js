@@ -383,7 +383,7 @@ router.get('/verify', async (req, res) => {
 
     if (type == "vote") {
         const contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
-        const { rows: result } = await db.query(contenderQuery, [req.session.contestantId]); 
+        const { rows: result } = await query(contenderQuery, [req.session.contestantId]); 
 
       if (result.length > 0) {
             req.flash('success_msg', `Payment successful! ${req.session.voteNumber} vote(s) casted for ${result[0].fname} ${result[0].lname} `);
@@ -395,7 +395,7 @@ router.get('/verify', async (req, res) => {
       }else{
 
         const ticketQuery = `SELECT * FROM "tickets" WHERE "id" = $1`;
-        const { rows: result } = await db.query(ticketQuery, [req.session.ticketID]); 
+        const { rows: result } = await query(ticketQuery, [req.session.ticketID]); 
 
       if (result.length > 0) {
             req.flash('success_msg', `Payment successful for ${result[0].name} ticket, check email for ticket code (check spam folder)`);
@@ -450,7 +450,7 @@ router.post('/webhook', async (req, res) => {
           const { voteNumber, contestantId, userId } = metadata;
        // Check if transaction already exists in the database to prevent duplication
        const existingTransactionQuery = `SELECT * FROM "transactions" WHERE "reference" = $1`;
-       const { rows: existingTransaction } = await db.query(existingTransactionQuery, [reference]);
+       const { rows: existingTransaction } = await query(existingTransactionQuery, [reference]);
 
        if (existingTransaction.length === 0) {
          // Save transaction details to the database
@@ -458,7 +458,7 @@ router.post('/webhook', async (req, res) => {
            ("reference", "amount", "status", "email", "paid_at", "user_id", "contendant_id", "votes_casted") 
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
          
-         await db.query(transactionQuery, [
+         await query(transactionQuery, [
            reference, 
            amount / 100,  // Convert kobo back to naira
            status, 
@@ -471,7 +471,7 @@ router.post('/webhook', async (req, res) => {
 
          // Fetch current vote count of the contestant
          const contenderQuery = `SELECT * FROM "contenders" WHERE "id" = $1`;
-         const { rows: contenderResults } = await db.query(contenderQuery, [contestantId]);
+         const { rows: contenderResults } = await query(contenderQuery, [contestantId]);
 
          if (contenderResults.length > 0) {
            const currentVoteCount = contenderResults[0].vote_count;
@@ -481,22 +481,22 @@ router.post('/webhook', async (req, res) => {
            
            // Update vote count in "contenders" table
            const voteCountQuery = `UPDATE "contenders" SET "vote_count" = $1 WHERE "id" = $2`;
-           await db.query(voteCountQuery, [newVote, contestantId]);
+           await query(voteCountQuery, [newVote, contestantId]);
 
 
            //
            const getNewTransaction = `SELECT * FROM "transactions" WHERE "reference" = $1`;
-           const { rows: transactionResult } = await db.query(getNewTransaction, [reference]);
+           const { rows: transactionResult } = await query(getNewTransaction, [reference]);
 
            if (transactionResult.length > 0) {
 
              const updateTransaction = `UPDATE "transactions" SET "old_vote" = $1, "new_vote" = $2 WHERE "id" = $3`;
-             await db.query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
+             await query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
            return  console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
            }
            
            const updateTransaction = `UPDATE "transactions" SET "old_vote" = $1, "new_vote" = $2 WHERE "id" = $3`;
-           await db.query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
+           await query(updateTransaction, [currentVoteCount,newVote, transactionResult[0].id]);
            console.log(`${voteNumber} vote(s) submitted for ${contenderResults[0].fname} ${contenderResults[0].lname}`);
            console.log('transaction was updated outside');
 
@@ -519,7 +519,7 @@ router.post('/webhook', async (req, res) => {
           const { ticketID, userId,ticketType } = metadata;
           // Check if transaction already exists in the database to prevent duplication
           const existingTransactionQuery = `SELECT * FROM "ticket_transactions" WHERE "reference" = $1`;
-          const { rows: existingTransaction } = await db.query(existingTransactionQuery, [reference]);
+          const { rows: existingTransaction } = await query(existingTransactionQuery, [reference]);
 
         if (existingTransaction.length === 0) {
           // Save transaction details to the database
@@ -534,7 +534,7 @@ router.post('/webhook', async (req, res) => {
             ("reference", "amount", "status", "email", "paid_at", "user_id", "ticket_id", "ticket_code") 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
 
-            await db.query(transactionQuery, [
+            await query(transactionQuery, [
               reference, 
               amount / 100,  // Convert kobo back to naira
               status, 
@@ -548,7 +548,7 @@ router.post('/webhook', async (req, res) => {
                  // Insert into 'paid_tickets' table with generated ticket code
               const ticketInsertQuery = `INSERT INTO "paid_tickets" ("ticket_code", "ticket_type", "user_id", "ticket_id") VALUES ($1, $2, $3, $4)`;
 
-            await db.query(ticketInsertQuery, [
+            await query(ticketInsertQuery, [
               ticketCode,
               ticketType,
               userId,
@@ -558,8 +558,8 @@ router.post('/webhook', async (req, res) => {
           const sendEmail = (to, subject, message) => {
             // Email options
             const mailOptions = {
-              from: 'your-email@gmail.com',
-              to,
+              from: appName,
+              to:email,
               subject,
               html: message  // Use the HTML property instead of text
             };
