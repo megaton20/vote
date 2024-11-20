@@ -20,19 +20,22 @@
           <img src="<%= data.photo_url %>" class="card-img-top" alt="<%= data.fname %> <%= data.lname %>">
   
           <div class="card-body">
-            <h2 class="text-uppercase" ><%= data.name %></h2>
-            <p class="card-text">Price: <%= data.amount %></p>
-            <p class="card-text">Available: 120 left</p>
+            <h2 class="text-uppercase"><%= data.name %></h2>
+            <p class="card-text">Price: ₦ <%= data.amount %></p>
+            <p class="card-text">Available: <%= data.total %> left</p>
             <p class="card-text">Quantity: 1</p>
-  
+          
             <form class="paymentForm" id="paymentForm-<%= data.id %>">
               <input type="email" class="form-control" id="email-<%= data.id %>" value="<%= user.email %>" hidden>
               <input type="number" class="form-control amountInput" id="amount-<%= data.id %>" value="<%= data.amount %>" hidden>
-              <button type="submit" class="mt-2 btn btn-success voteButton" style="width: 100%;">
-                Buy
+              <button 
+                type="submit" 
+                class="mt-2 btn btn-success voteButton" 
+                style="width: 100%;" 
+                <%= data.total == 0 ? 'disabled' : '' %>>
+                <%= data.total == 0 ? 'Sold out' : 'Buy' %>
               </button>
             </form>
-  
           </div>
         </div>
       </div>
