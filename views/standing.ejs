@@ -48,9 +48,9 @@
                             <td class="<%= data['points'] < 200 ? 'text-danger' : data['points'] < 500 ? 'text-warning' : 'text-success' %>">
                                 <%= data['points'] %>
                             </td>
-                                <td class="<%= data['status'] === 'eviction' ? 'text-danger' : 'text-success' %>">
-                                    <%= data['status'] === 'eviction' ? 'Evicted' : 'Active' %>
-                                </td>
+                            <td class="<%= data['status'] === 'eviction' ? 'text-danger' : 'text-success' %>">
+                                <i class="<%= data['status'] === 'eviction' ? 'fas fa-times-circle' : 'fas fa-check-circle' %>"></i>
+                              </td>
                             </tr> 
                         <% }) %>
                     </tbody>

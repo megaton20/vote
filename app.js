@@ -21,8 +21,11 @@ const authRouter = require('./router/auth');
 const userRouter = require('./router/userRouter');
 const contestantsRouter = require('./router/contestantsRouter');
 const ticketsRouter = require('./router/ticketsRouter');
-const superRouter = require('./router/superRouter');
+const adminRouter = require('./router/adminRouter');
+const dashboardRouter = require('./router/dashboardRouter');
+const teamRouter = require('./router/teamRouter');
 const {stopActions,mentainanceAction} = require('./middlewares/atWork');
+const { ensureAuthenticated } = require('./config/auth');
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -84,7 +87,9 @@ app.use('/auth',stopActions, authRouter);
 app.use('/user',stopActions, userRouter);
 app.use('/contestants',stopActions, contestantsRouter);
 app.use('/tickets',stopActions, ticketsRouter);
-app.use('/admin',stopActions, superRouter);
+app.use('/admin',stopActions, adminRouter);
+app.use('/dashboard',stopActions, ensureAuthenticated, dashboardRouter);
+app.use('/team',stopActions, ensureAuthenticated, teamRouter);
 
 
   // 404 Error handler for undefined routes

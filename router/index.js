@@ -323,7 +323,9 @@ router.post('/pay',ensureAuthenticated, async (req, res) => {
   }else if(type == "ticket"){
     try {
 
-      const { email, amount,ticketID, type,ticketType} = req.body;
+      const { email, amount,ticketID, type,ticketType , firstName, lastName} = req.body;
+
+
       req.session.ticketID = ticketID;
       req.session.ticketType = ticketType;
       const response = await axios.post('https://api.paystack.co/transaction/initialize', {
@@ -334,7 +336,9 @@ router.post('/pay',ensureAuthenticated, async (req, res) => {
             userId: req.user.id, 
             ticketID: ticketID,
             type:type,
-            ticketType:ticketType
+            ticketType:ticketType,
+            firstName,
+            lastName
           }
       }, {
           headers: {
@@ -516,7 +520,7 @@ router.post('/webhook', async (req, res) => {
         }else{
 
 
-          const { ticketID, userId,ticketType } = metadata;
+          const { ticketID, userId,ticketType,firstName,lastName } = metadata;
           // Check if transaction already exists in the database to prevent duplication
           const existingTransactionQuery = `SELECT * FROM "ticket_transactions" WHERE "reference" = $1`;
           const { rows: existingTransaction } = await query(existingTransactionQuery, [reference]);
@@ -527,6 +531,15 @@ router.post('/webhook', async (req, res) => {
             const uniqueCode = Math.random().toString(36).substr(2, 8).toUpperCase(); // Generate a random 8-character alphanumeric string
             return `STS-${uniqueCode}`;
           };
+
+          const { rows: ticketPaidFor } = await query(`SELECT * FROM "tickets" WHERE "id" = $1`, [ticketID]);
+          if (!ticketPaidFor.length) {
+            throw new Error("Ticket not found");
+          }
+          const newLeft = ticketPaidFor[0].total - 1;
+
+          
+          await query(`UPDATE "tickets" SET "total" = $1 WHERE "id" = $2`, [newLeft, ticketID]);
 
           const ticketCode = generateTicketCode();
             // Save transaction details, including the ticket code, to the database
@@ -546,13 +559,15 @@ router.post('/webhook', async (req, res) => {
             ]);
 
                  // Insert into 'paid_tickets' table with generated ticket code
-              const ticketInsertQuery = `INSERT INTO "paid_tickets" ("ticket_code", "ticket_type", "user_id", "ticket_id") VALUES ($1, $2, $3, $4)`;
+              const ticketInsertQuery = `INSERT INTO "paid_tickets" ("ticket_code", "ticket_type", "user_id", "ticket_id", "first_name", "last_name") VALUES ($1, $2, $3, $4, $5, $6)`;
 
             await query(ticketInsertQuery, [
               ticketCode,
               ticketType,
               userId,
-              ticketID
+              ticketID,
+              firstName,
+              lastName
             ]);
           // Send email with ticket details
           const sendEmail = (to, subject, message) => {
@@ -567,9 +582,7 @@ router.post('/webhook', async (req, res) => {
             transporter.sendMail(mailOptions, function (error, info) {
               if (error) {
                 console.log('Error sending email:', error);
-              } else {
-                console.log('Email sent successfully:', info.response);
-              }
+              } 
             });
           };
 
@@ -577,13 +590,13 @@ router.post('/webhook', async (req, res) => {
           const emailSubject = 'Your Ticket Purchase Confirmation';
           const emailMessage = `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
-              <h2>Dear Customer,</h2>
               <p>Thank you for your purchase! Here are your ticket details:</p>
-              <ul>
-                <li><strong>Ticket Code:</strong> ${ticketCode}</li>
-                <li><strong>Ticket Amount:</strong> ₦${(amount / 100).toFixed(2)}</li>
-                <li><strong>Date:</strong> ${paid_at}</li>
-              </ul>
+              <p>Thank you  ${firstName}  ${lastName}</p>
+
+                <p><strong>Ticket Code:</strong> ${ticketCode}</p>
+                <p><strong>Ticket Amount:</strong> ₦${(amount / 100).toFixed(2)}</p>
+                <p><strong>Date:</strong> ${paid_at}</p>
+
               <p>Please keep this ticket code safe, as it will be required for event entry.</p>
               <p>Best regards,<br>The Carnival Queen</p>
             </div>
